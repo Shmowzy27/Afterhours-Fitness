@@ -45,3 +45,11 @@ All test records were confined to isolated browser contexts. The delivered app s
 - 32 core tests pass. Known allergy words map to explicit exclusions (seafood → fish + shellfish); unknown fragments still pause planning. Diagnostic reasons cover exclusions, avoided ingredients, diet, equipment, and recipe time.
 - Local browser verified direct food-filter editing and the originally reported combination yielding three compatible recipes, a populated menu, and a nonempty grocery estimate. The direct editor preserves unrelated profile settings.
 - An entirely empty saved menu is rebuilt when compatible recipes become available, preserving the stored allergy text, training schedule, and food records. No-menu budgets no longer claim success, and empty grocery tables explain the missing menu.
+
+## Editorial and evidence review — 2026-09-22
+
+- Replaced broad motivational slogans with direct descriptions of the schedule, meal filters, training session, and saved records.
+- Added an in-app methods panel and a public methods document naming the ACSM position stand, CDC adult activity guidance, Mifflin–St Jeor equation, Morton protein meta-analysis, and USDA FoodData Central dataset.
+- Distinguished source findings from product implementation rules and stated that the complete program has not been tested as a clinical intervention.
+- Fixed service-worker cache cleanup so this revision replaces older installed shells.
+- All 36 unit checks and the four primary browser flows passed in Chrome at desktop and phone sizes. No horizontal document overflow or page JavaScript errors were found.
