@@ -14,3 +14,5 @@
 @media(max-width:550px){.achievement-grid{grid-template-columns:1fr}}
 [data-theme=dark] .exercise-card,[data-theme=dark] .budget-strip,[data-theme=dark] .empty-chart p,[data-theme=dark] .empty-chart span{background:var(--white);color:var(--ink)}
 [data-theme=dark] .weight-chart text{fill:var(--muted)}[data-theme=dark] .weight-chart polyline{stroke:#b5d483}[data-theme=dark] .weight-chart circle{fill:#b5d483}[data-theme=dark] .weight-chart path{stroke:var(--line)}
+
+.local-badge[data-action]{text-align:left;width:100%;color:inherit;cursor:pointer}.local-badge[data-action] small{overflow-wrap:anywhere}.topbar .zone[data-action]{cursor:pointer;text-transform:none}
