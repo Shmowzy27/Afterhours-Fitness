@@ -38,3 +38,10 @@ All test records were confined to isolated browser contexts. The delivered app s
 - 29 core tests pass, including chosen-recipe scheduling, restriction-safe fallback, and preservation of past days, logged meals, workout schedules and meal identities.
 - Dedicated browser test passes: choose recipes → recommendations → preview → apply → reload, plus expired-week renewal and mobile overflow check.
 - Reviewed phone screenshot of the recommendations section and resulting menu.
+
+## Food exclusions and empty-state recovery
+
+- Inspected the affected browser's food form: checked exclusions and the text “seafoods” accounted for the empty menu. User confirmed all were entered as desired foods and authorized clearing both.
+- 32 core tests pass. Known allergy words map to explicit exclusions (seafood → fish + shellfish); unknown fragments still pause planning. Diagnostic reasons cover exclusions, avoided ingredients, diet, equipment, and recipe time.
+- Local browser verified direct food-filter editing and the originally reported combination yielding three compatible recipes, a populated menu, and a nonempty grocery estimate. The direct editor preserves unrelated profile settings.
+- An entirely empty saved menu is rebuilt when compatible recipes become available, preserving the stored allergy text, training schedule, and food records. No-menu budgets no longer claim success, and empty grocery tables explain the missing menu.

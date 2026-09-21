@@ -14,7 +14,20 @@ export function inQuiet(t,p){const x=mins(t),a=mins(p.quietStart),b=mins(p.quiet
 export function isAsleep(t,s){const x=mins(t),a=mins(s.sleep),b=mins(s.wake);return a===b?false:a<b?x>=a&&x<b:x>=a||x<b;}
 export const recipe=id=>recipes.find(r=>r.id===id);
 export function nutrition(r,servings=1,p=defaults){return Object.entries(r.items).reduce((a,[id,g])=>{const i=ingredients[id];a.kcal+=g*i.kcal/100*servings;a.protein+=g*i.protein/100*servings;a.cost+=g/(p.prices[id]?.pack||i.pack)*(p.prices[id]?.price??i.price)*servings;return a;},{kcal:0,protein:0,cost:0});}
-export function allowedRecipes(p){if(p.otherAllergy.trim())return [];const excluded=p.avoid.toLowerCase().split(',').map(s=>s.trim()).filter(Boolean);return recipes.filter(r=>r.time<=p.prepTime&&r.gear.every(g=>p.kitchen.includes(g))&&Object.keys(r.items).every(id=>!ingredients[id].allergens.some(a=>p.allergies.includes(a))&&!excluded.some(e=>ingredients[id].name.toLowerCase().includes(e)||id.includes(e))&&(p.diet!=='vegetarian'||!['chicken','tuna','sardine'].includes(id))));}
+export function allergyRules(p){
+ const aliases={seafood:['fish','shellfish'],seafoods:['fish','shellfish'],egg:['egg'],eggs:['egg'],soy:['soy'],soya:['soy'],fish:['fish'],gluten:['gluten'],wheat:['gluten'],legume:['legume'],legumes:['legume'],milk:['milk'],dairy:['milk'],peanut:['peanut'],peanuts:['peanut'],'tree nut':['tree nut'],'tree nuts':['tree nut'],shellfish:['shellfish'],sesame:['sesame']};
+ const terms=(p.otherAllergy||'').toLowerCase().split(/[,;\n]+/).map(x=>x.trim()).filter(Boolean),unknown=terms.filter(x=>!aliases[x]);
+ return {allergens:[...new Set([...p.allergies,...terms.flatMap(x=>aliases[x]||[])])],unknown,recognized:terms.filter(x=>aliases[x])};
+}
+export function recipeEligibility(p){const rules=allergyRules(p),excluded=p.avoid.toLowerCase().split(',').map(x=>x.trim()).filter(Boolean);return recipes.map(r=>{const reasons=[];
+ if(rules.unknown.length)reasons.push('Unrecognized allergy: '+rules.unknown.join(', '));
+ const allergens=[...new Set(Object.keys(r.items).flatMap(id=>ingredients[id].allergens).filter(a=>rules.allergens.includes(a)))];if(allergens.length)reasons.push('Contains excluded ingredients: '+allergens.join(', '));
+ const avoided=Object.keys(r.items).filter(id=>excluded.some(e=>ingredients[id].name.toLowerCase().includes(e)||id.includes(e)));if(avoided.length)reasons.push('Ingredients you avoid: '+avoided.map(id=>ingredients[id].name).join(', '));
+ if(p.diet==='vegetarian'&&Object.keys(r.items).some(id=>['chicken','tuna','sardine'].includes(id)))reasons.push('Not vegetarian');
+ if(r.time>p.prepTime)reasons.push('Needs '+r.time+' minutes; your limit is '+p.prepTime);
+ const missing=r.gear.filter(g=>!p.kitchen.includes(g));if(missing.length)reasons.push('Needs equipment: '+missing.join(', '));
+ return {recipe:r,reasons};});}
+export function allowedRecipes(p){return recipeEligibility(p).filter(x=>!x.reasons.length).map(x=>x.recipe);}
 export function availableExercises(p){const eq=[...p.equipment];if(p.bench!=='none')eq.push('bench');return exercises.filter(e=>e.equipment.every(x=>eq.includes(x))&&!e.limits.some(x=>p.limitations.includes(x)));}
 export function routine(p,short=false){if(p.otherLimit.trim())return [];const available=availableExercises(p);const patterns=(p.minutes<25||short)?['squat','hinge','push','pull']:['squat','hinge','push','pull','core'];return patterns.map(pattern=>available.find(e=>e.pattern===pattern)).filter(Boolean).map(e=>({...e,sets:short||p.minutes<30||p.experience==='beginner'||p.experience==='returning'?2:3}));}
 // Times are suggested for logistics, not a claim of physiologically optimal timing.
