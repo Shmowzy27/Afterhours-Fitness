@@ -33,11 +33,17 @@ npm run check
 
 The unit tests use Node's built-in test runner. To run the optional browser checks, install the development dependencies with `pnpm install`, then run `pnpm exec playwright install chromium`. Browser checks expect the local server to be running. Set `CHROME_PATH` to use an existing Chrome installation; otherwise Playwright uses its managed browser.
 
+## Deploy on Cloudflare Pages
+
+Connect this repository to a Cloudflare Pages project. Leave the build command empty and set the output directory to `dist`. The included `wrangler.toml` and `dist/_headers` files also support direct deployment with Wrangler.
+
 ## Data and privacy
 
 Personal records are stored in the browser under the `afterhours.v1` local-storage key. They are not included in the repository or uploaded by the app. Export a JSON backup before clearing browser data or moving to another device.
 
 Nutrition values are calculated from the cited USDA FoodData Central records in `docs/nutrition-provenance.json`. Prices and currency conversions are planning estimates. Exercise and nutrition guidance is educational and cannot guarantee individual results.
+
+The calculation rules and primary references are documented in [`docs/methods.md`](docs/methods.md).
 
 ## Project structure
 
