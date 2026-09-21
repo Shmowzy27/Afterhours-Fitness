@@ -1,26 +1,28 @@
+import {nutritionData} from './nutrition-data.js';
 // All prices are editable planning placeholders in PHP, not observed local prices.
-// Nutrition: approximate generic raw ingredient values /100g, not laboratory recipe analysis.
+// Nutrients are replaced below by the extracted USDA source records; recipe totals remain estimates.
 export const ingredients={
- rice:{name:'Rice',kcal:365,protein:7.1,pack:1000,price:60,measure:'~½ cup per 90 g',allergens:[]},
- oats:{name:'Rolled oats',kcal:389,protein:16.9,pack:500,price:100,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
- egg:{name:'Egg',kcal:143,protein:12.6,pack:300,price:54,measure:'1 medium egg ≈ 50 g edible',allergens:['egg']},
- chicken:{name:'Chicken breast, boneless',kcal:120,protein:22.5,pack:500,price:130,measure:'1 small breast ≈ 150 g',allergens:[]},
- tofu:{name:'Firm tofu',kcal:76,protein:8.1,pack:250,price:40,measure:'1 block ≈ 250 g',allergens:['soy']},
- mung:{name:'Mung beans, dry',kcal:347,protein:23.9,pack:500,price:70,measure:'½ cup ≈ 100 g',allergens:['legume']},
- sardine:{name:'Sardines in tomato sauce',kcal:185,protein:20,pack:155,price:28,measure:'1 can = 155 g as sold',allergens:['fish']},
- tuna:{name:'Tuna in water, drained',kcal:116,protein:25.5,pack:120,price:55,measure:'1 drained can ≈ 120 g',allergens:['fish']},
- banana:{name:'Banana, peeled',kcal:89,protein:1.1,pack:500,price:45,measure:'1 medium ≈ 100 g edible',allergens:[]},
- cabbage:{name:'Cabbage',kcal:25,protein:1.3,pack:500,price:40,measure:'1 cup shredded ≈ 90 g',allergens:[]},
- carrot:{name:'Carrot',kcal:41,protein:0.9,pack:250,price:30,measure:'1 medium ≈ 60 g',allergens:[]},
- papaya:{name:'Green papaya, peeled',kcal:43,protein:0.5,pack:500,price:35,measure:'1 cup cubes ≈ 140 g',allergens:[]},
- tomato:{name:'Tomato',kcal:18,protein:0.9,pack:250,price:25,measure:'1 medium ≈ 100 g',allergens:[]},
- onion:{name:'Onion',kcal:40,protein:1.1,pack:250,price:35,measure:'1 small ≈ 70 g',allergens:[]},
- garlic:{name:'Garlic',kcal:149,protein:6.4,pack:100,price:25,measure:'1 clove ≈ 3 g',allergens:[]},
- ginger:{name:'Ginger',kcal:80,protein:1.8,pack:100,price:20,measure:'1 thumb ≈ 15 g',allergens:[]},
- oil:{name:'Cooking oil',kcal:884,protein:0,pack:500,price:80,measure:'1 tsp ≈ 5 g',allergens:[]},
- vinegar:{name:'Cane vinegar',kcal:18,protein:0,pack:350,price:25,measure:'1 tbsp ≈ 15 g',allergens:[]},
- soy:{name:'Soy sauce',kcal:53,protein:8.1,pack:350,price:30,measure:'1 tbsp ≈ 15 g',allergens:['soy','gluten']}
+ rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:60,measure:'~½ cup per 90 g',allergens:[]},
+ oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:100,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
+ egg:{name:'Egg',kcal:143.0,protein:12.56,pack:300,price:54,measure:'1 medium egg ≈ 50 g edible',allergens:['egg']},
+ chicken:{name:'Chicken breast, boneless',kcal:120.0,protein:22.5,pack:500,price:130,measure:'1 small breast ≈ 150 g',allergens:[]},
+ tofu:{name:'Firm tofu',kcal:144.0,protein:17.27,pack:250,price:40,measure:'1 block ≈ 250 g',allergens:['soy']},
+ mung:{name:'Mung beans, dry',kcal:347.0,protein:23.86,pack:500,price:70,measure:'½ cup ≈ 100 g',allergens:['legume']},
+ sardine:{name:'Sardines in tomato sauce',kcal:185.0,protein:20.86,pack:155,price:28,measure:'1 can = 155 g as sold',allergens:['fish']},
+ tuna:{name:'Tuna in water, drained',kcal:86.0,protein:19.44,pack:120,price:55,measure:'1 drained can ≈ 120 g',allergens:['fish']},
+ banana:{name:'Banana, peeled',kcal:89.0,protein:1.09,pack:500,price:45,measure:'1 medium ≈ 100 g edible',allergens:[]},
+ cabbage:{name:'Cabbage',kcal:25.0,protein:1.28,pack:500,price:40,measure:'1 cup shredded ≈ 90 g',allergens:[]},
+ carrot:{name:'Carrot',kcal:41.0,protein:0.93,pack:250,price:30,measure:'1 medium ≈ 60 g',allergens:[]},
+ papaya:{name:'Green papaya, peeled',kcal:43.0,protein:0.47,pack:500,price:35,measure:'1 cup cubes ≈ 140 g',allergens:[]},
+ tomato:{name:'Tomato',kcal:18.0,protein:0.88,pack:250,price:25,measure:'1 medium ≈ 100 g',allergens:[]},
+ onion:{name:'Onion',kcal:40.0,protein:1.1,pack:250,price:35,measure:'1 small ≈ 70 g',allergens:[]},
+ garlic:{name:'Garlic',kcal:149.0,protein:6.36,pack:100,price:25,measure:'1 clove ≈ 3 g',allergens:[]},
+ ginger:{name:'Ginger',kcal:80.0,protein:1.82,pack:100,price:20,measure:'1 thumb ≈ 15 g',allergens:[]},
+ oil:{name:'Cooking oil',kcal:884.0,protein:0.0,pack:500,price:80,measure:'1 tsp ≈ 5 g',allergens:[]},
+ vinegar:{name:'Cane vinegar',kcal:18.0,protein:0.0,pack:350,price:25,measure:'1 tbsp ≈ 15 g',allergens:[]},
+ soy:{name:'Soy sauce',kcal:53.0,protein:8.14,pack:350,price:30,measure:'1 tbsp ≈ 15 g',allergens:['soy','gluten']}
 };
+for(const [id,record] of Object.entries(nutritionData)){ingredients[id].kcal=record.kcal;ingredients[id].protein=record.protein;ingredients[id].nutritionSource=record;}
 const storage='Refrigerate within 2 hours (1 hour above 32°C), in shallow sealed containers. Keep chilled up to 3–4 days or freeze portions promptly. Reheat leftovers to 74°C throughout. Cool rice promptly; never leave it on the counter overnight.';
 export const recipes=[
 {id:'silog',name:'Egg & tomato rice bowl',tag:'Breakfast staple',time:20,prep:5,cook:15,gear:['stove'],items:{rice:80,egg:100,tomato:100,oil:5},steps:['Rinse the raw rice. Cook with water according to its package instructions.','Dice the tomato. Heat oil in a pan; soften the tomato for 2 minutes.','Add beaten eggs and stir until fully set. Serve over the cooked rice.'],subs:'Swap tomato for cabbage by choosing another matching recipe. For egg allergy, choose the tofu bowl.',storage},
@@ -47,6 +49,8 @@ export const exercises=[
 {id:'deadbug',name:'Dead bug',equipment:[],pattern:'core',reps:[6,10],rest:45,cues:'Lie on your back with knees above hips. Slowly extend opposite arm and leg; keep your lower back steady. Reps are per side.',limits:['back'],unit:'bodyweight'}
 ];
 export const sources=[
+['Resistance training evidence · ACSM 2026 position stand','https://pubmed.ncbi.nlm.nih.gov/41843416/'],
+['USDA FoodData Central · source dataset','https://fdc.nal.usda.gov/download-datasets/'],
 ['Activity guidance · CDC','https://www.cdc.gov/physical-activity-basics/guidelines/adults.html'],
 ['Philippine food reference · DOST-FNRI PhilFCT','https://i.fnri.dost.gov.ph/fct/library'],
 ['Energy equation · Mifflin et al. (1990)','https://pubmed.ncbi.nlm.nih.gov/2305711/'],
@@ -55,3 +59,42 @@ export const sources=[
 ['iPhone web notifications · WebKit','https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/'],
 ['Free push service researched · OneSignal','https://onesignal.com/pricing']
 ];
+
+// Publisher pages and video identities checked 2026-09-21. External playback needs internet.
+export const exerciseVideos={
+ squat:{url:'https://www.muscleandstrength.com/exercises/dumbbell-goblet-squat',source:'Muscle & Strength'},
+ sit:{url:'https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/squat/vid-20084663',source:'Mayo Clinic'},
+ rdl:{url:'https://www.youtube.com/watch?v=MAa24xjE9kk',source:'Physique Development · YouTube'},
+ bridge:{url:'https://www.muscleandstrength.com/exercises/bodyweight-glute-bridge',source:'Muscle & Strength'},
+ floor:{url:'https://www.muscleandstrength.com/exercises/dumbbell-floor-press.html',source:'Muscle & Strength'},
+ bench:{url:'https://www.muscleandstrength.com/exercises/dumbbell-bench-press.html',source:'Muscle & Strength'},
+ wall:{url:'https://www.hybridcalisthenics.com/wall-pushups',source:'Hybrid Calisthenics · looping demonstration'},
+ row:{url:'https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/bent-over-row/vid-20084680',source:'Mayo Clinic',note:'The demonstration uses one arm at a time. Apply the same controlled hinge and row to each side.'},
+ prone:{url:'https://www.peak-physio.com.au/exercise/scapula-retraction-w/',source:'Peak Physio'},
+ deadbug:{url:'https://www.muscleandstrength.com/exercises/dead-bug',source:'Muscle & Strength'}
+};
+export const cookingVideos={
+ tinola:{url:'https://www.youtube.com/watch?v=6U7AkrbSBwk',source:'Panlasang Pinoy · YouTube',label:'Watch tinola cooking guide'},
+ adobo:{url:'https://www.youtube.com/watch?v=FWjp0ieChzs',source:'Panlasang Pinoy · YouTube',label:'Watch adobo cooking guide'},
+ monggo:{url:'https://panlasangpinoy.com/monggo-pinakbet/',source:'Panlasang Pinoy · recipe with video',label:'Watch a related monggo recipe'},
+ sardine:{url:'https://panlasangpinoy.com/ginisang-sayote-at-sardinas/',source:'Panlasang Pinoy · recipe with video',label:'Watch a related sardine sauté'}
+};
+export function cookingSearch(r){const queries={silog:'tomato scrambled egg rice recipe tutorial',oats:'banana oatmeal boiled eggs preparation tutorial',tofu:'tofu cabbage carrot stir fry recipe tutorial',chicken:'chicken cabbage carrot stir fry tutorial',tuna:'canned tuna tomato rice bowl recipe',overnight:'banana overnight oats with water recipe'};return 'https://www.youtube.com/results?search_query='+encodeURIComponent(queries[r.id]||r.name+' cooking tutorial');}
+
+// Embed IDs read from the publishers' own video links, checked 2026-09-21.
+const exerciseEmbedIds={squat:'5Y3KW5rWMh4',sit:'X3Neqzn6XOI',rdl:'MAa24xjE9kk',bridge:'mm4wbmtDrUc',floor:'gaBOfLlIXjs',bench:'dGqI0Z5ul4k',wall:'ze4qofHM20k',row:'quzRjX0Pbs4',prone:'9flgfMgmwl4',deadbug:'eEhoSeBFoBk'};
+for(const [id,youtube]of Object.entries(exerciseEmbedIds))exerciseVideos[id].youtube=youtube;
+Object.assign(exerciseVideos.sit,{url:'https://www.southtees.nhs.uk/resources/sit-to-stand-from-chair-combined/',source:'South Tees Hospitals NHS Foundation Trust'});
+Object.assign(exerciseVideos.row,{url:'https://www.youtube.com/watch?v=quzRjX0Pbs4',source:'Physique Development',note:'One-arm demonstration: train each side with support from a stable bench; keep your torso still.'});
+Object.assign(exerciseVideos.wall,{url:'https://www.youtube.com/watch?v=ze4qofHM20k',source:'Hybrid Calisthenics',note:'Use the wall-pushup section only. Follow your app’s sets and reps; harder progressions are not prescribed.'});
+Object.assign(cookingVideos,{
+ silog:{youtube:'s9r-CxnCXkg',url:'https://www.youtube.com/watch?v=s9r-CxnCXkg',source:'Jamie Oliver',label:'Scrambling technique',note:'Demonstrates egg technique, not the complete tomato-and-rice dish. Butter and cooking texture differ; follow this recipe and cook eggs until set.'},
+ tofu:{youtube:'joLbhsXuAVA',url:'https://panlasangpinoy.com/tofu-vegetable-stir-fry/',source:'Panlasang Pinoy',label:'Related tofu stir-fry',note:'Uses different vegetables, sauces, and more frying oil. Use the quantities in this app.'},
+ chicken:{youtube:'j3kIj35AVdA',url:'https://panlasangpinoy.com/ginisang-repolyo-with-chicken-knr-cc/',source:'Panlasang Pinoy',label:'Related cabbage and chicken sauté',note:'Uses oyster sauce, stock cube, and peppers not in this recipe.'},
+ oats:{youtube:'VZOHHCosuzY',url:'https://downshiftology.com/recipes/best-oatmeal-recipe/',source:'Downshiftology',label:'Basic oatmeal technique',note:'Toppings differ. Prepare the boiled eggs separately using the written recipe.'},
+ overnight:{youtube:'Lkl9_3-jX6c',url:'https://downshiftology.com/recipes/overnight-oats/',source:'Downshiftology',label:'Overnight oats technique',note:'The video includes dairy, yogurt, and optional nuts. Follow this app’s ingredients, water ratio, refrigeration, and portions.'}
+});
+Object.assign(cookingVideos.tinola,{youtube:'6U7AkrbSBwk'});Object.assign(cookingVideos.adobo,{youtube:'FWjp0ieChzs'});
+Object.assign(cookingVideos.monggo,{youtube:'Mz-pLV8IZfU',note:'This variation includes pork and shrimp paste; those are not ingredients in your app recipe.'});
+Object.assign(cookingVideos.sardine,{youtube:'JFRy2fd7Hy0',note:'This variation uses chayote rather than cabbage.'});
+cookingVideos.tuna={youtube:'Ez9mcEmY41I',url:'https://panlasangpinoy.com/tuna-in-can-sarciado/',source:'Panlasang Pinoy',label:'Related tuna and tomato sauté',note:'Sarciado adds egg and other seasonings; the app’s tuna bowl omits these. Use the written recipe’s ingredients and portions.'};
