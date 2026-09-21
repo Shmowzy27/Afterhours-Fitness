@@ -1,0 +1,16 @@
+import {createRequire} from 'node:module';import fs from 'node:fs';
+const require=createRequire('/Users/beans/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/package.json');const {chromium}=require('playwright');
+const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});const context=await browser.newContext({viewport:{width:1440,height:1050}});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+fs.mkdirSync('artifacts',{recursive:true});
+await page.goto('http://localhost:4173');await page.screenshot({path:'artifacts/desktop-welcome.png',fullPage:true});
+await page.getByRole('button',{name:'Set up my plan'}).click();
+for(let i=0;i<4;i++)await page.getByRole('button',{name:'Continue',exact:false}).click();
+await page.getByRole('button',{name:'Review my plan'}).click();await page.getByRole('button',{name:'Accept & save my plan'}).click();
+await page.getByRole('button',{name:'Check in',exact:false}).click();await page.locator('input[name="weight"]').fill('75');await page.getByRole('button',{name:'Save check-in'}).click();
+await page.locator('nav a[href="#training"]').click();await page.locator('[data-action=day][data-day="2026-09-21"]').click();await page.getByRole('button',{name:'Start session'}).click();await page.locator('input[name="done-0-0"]').check();await page.getByRole('button',{name:'Finish & save completed sets'}).click();
+await page.locator('nav a[href="#meals"]').click();await page.getByRole('button',{name:'View recipe'}).first().click();await page.locator('#recipe-servings').fill('2');await page.locator('#recipe-servings').dispatchEvent('change');await page.getByRole('button',{name:'Add to grocery list'}).click();await page.getByRole('button',{name:'Close dialog'}).click();
+await page.locator('nav a[href="#today"]').click();await page.screenshot({path:'artifacts/desktop-today.png',fullPage:true});
+await page.reload();await page.waitForSelector('h1');const persisted=await page.evaluate(()=>JSON.parse(localStorage.getItem('afterhours.v1')));if(persisted.workouts.length!==1||persisted.checkins.length!==1)throw Error('Persistence failed');
+await page.evaluate(()=>navigator.serviceWorker.ready);await page.reload();await context.setOffline(true);await page.reload();await page.waitForSelector('h1');await page.locator('nav a[href="#meals"]').click();await page.getByText('Your week, on a plate.').waitFor();await context.setOffline(false);
+await page.setViewportSize({width:393,height:852});for(const name of ['today','training','meals','progress','settings']){await page.locator(`nav a[href="#${name}"]`).click();await page.screenshot({path:`artifacts/phone-${name}.png`,fullPage:true});const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);if(overflow)throw Error('Horizontal overflow '+name);}
+console.log(JSON.stringify({errors,persistence:true,offline:true,viewports:['1440x1050','393x852'],screens:['today','training','meals','progress','settings']},null,2));if(errors.length)throw Error(errors.join('\n'));await browser.close();
