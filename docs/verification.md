@@ -32,3 +32,9 @@ All test records were confined to isolated browser contexts. The delivered app s
 - XP deduplication, all rank boundaries, locked/unlocked achievements, restoration from backup, and form-report persistence.
 - All ten exercises and all ten recipes now have explicit YouTube embeds. Tutorial expand/collapse and dialog close manage iframe lifecycle; offline fallback works. A real exercise player loaded the correct publisher/title/channel in Chrome, but playback itself was not confirmed by the automation. YouTube/provider restrictions and real-device playback remain external verification limits.
 - Final browser.mjs, suggestions-browser.mjs, and coaching-browser.mjs passed without page JavaScript errors. Player availability is not mocked into a playback-success claim.
+
+## Meal recommendation fix
+
+- 29 core tests pass, including chosen-recipe scheduling, restriction-safe fallback, and preservation of past days, logged meals, workout schedules and meal identities.
+- Dedicated browser test passes: choose recipes → recommendations → preview → apply → reload, plus expired-week renewal and mobile overflow check.
+- Reviewed phone screenshot of the recommendations section and resulting menu.
