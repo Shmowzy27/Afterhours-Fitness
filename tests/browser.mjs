@@ -1,6 +1,5 @@
-import {createRequire} from 'node:module';import fs from 'node:fs';
-const require=createRequire('/Users/beans/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/package.json');const {chromium}=require('playwright');
-const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});const context=await browser.newContext({viewport:{width:1440,height:1050}});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+import {chromium} from 'playwright';import fs from 'node:fs';
+const browser=await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});const context=await browser.newContext({viewport:{width:1440,height:1050}});const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
 fs.mkdirSync('artifacts',{recursive:true});
 await page.goto('http://localhost:4173');await page.screenshot({path:'artifacts/desktop-welcome.png',fullPage:true});
 await page.getByRole('button',{name:'Set up my plan'}).click();

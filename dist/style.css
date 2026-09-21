@@ -16,3 +16,4 @@
 [data-theme=dark] .weight-chart text{fill:var(--muted)}[data-theme=dark] .weight-chart polyline{stroke:#b5d483}[data-theme=dark] .weight-chart circle{fill:#b5d483}[data-theme=dark] .weight-chart path{stroke:var(--line)}
 
 .local-badge[data-action]{text-align:left;width:100%;color:inherit;cursor:pointer}.local-badge[data-action] small{overflow-wrap:anywhere}.topbar .zone[data-action]{cursor:pointer;text-transform:none}
+.brand{line-height:1.15}.brand-mark{flex-shrink:0}@media(min-width:901px){.brand{font-size:19px;letter-spacing:-.7px}}
