@@ -1,0 +1,50 @@
+# Afterhours Fitness
+
+A local-first fitness planner for people whose waking day does not fit a typical daytime schedule. It combines strength training, meal planning, recipes, grocery estimates, reminders, progress records, and optional game-style progression in one installable web app.
+
+## Features
+
+- Schedule-aware meal and workout suggestions for workdays and days off
+- Time-zone support for cities in the Philippines, Australia, and Singapore
+- PHP, USD, SGD, and AUD display with a user-entered planning exchange rate
+- Equipment-aware strength sessions, technique cues, readiness choices, and conservative load progression
+- Meal recommendations filtered by allergies, diet, kitchen equipment, and preparation time
+- Complete recipes, embedded cooking and exercise tutorials, and a consolidated grocery list
+- Optional TDEE estimates, nutrition targets, check-ins, notes, XP, ranks, and achievements
+- Light and dark themes, offline caching, calendar alerts, and JSON backup/restore
+- Device-local records with no analytics or account requirement
+
+## Run locally
+
+Requires Node.js 20 or newer.
+
+```bash
+npm start
+```
+
+Then open `http://localhost:4173`.
+
+## Verify
+
+```bash
+npm test
+npm run check
+```
+
+The unit tests use Node's built-in test runner. To run the optional browser checks, install the development dependencies with `pnpm install`, then run `pnpm exec playwright install chromium`. Browser checks expect the local server to be running. Set `CHROME_PATH` to use an existing Chrome installation; otherwise Playwright uses its managed browser.
+
+## Data and privacy
+
+Personal records are stored in the browser under the `afterhours.v1` local-storage key. They are not included in the repository or uploaded by the app. Export a JSON backup before clearing browser data or moving to another device.
+
+Nutrition values are calculated from the cited USDA FoodData Central records in `docs/nutrition-provenance.json`. Prices and currency conversions are planning estimates. Exercise and nutrition guidance is educational and cannot guarantee individual results.
+
+## Project structure
+
+- `dist/` — complete static application
+- `tests/` — unit and browser checks
+- `docs/` — verification and data provenance
+- `scripts/` — reproducible nutrition-data extraction
+- `server.mjs` — local static server
+
+The app is dependency-free at runtime. Playwright is used only for browser verification.
