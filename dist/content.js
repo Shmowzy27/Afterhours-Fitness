@@ -1,4 +1,4 @@
-import {nutritionData} from './nutrition-data.js?v=20260922-11';
+import {nutritionData} from './nutrition-data.js?v=20260922-12';
 // Default prices are editable Perth supermarket estimates in AUD.
 // Nutrients are replaced below by the extracted USDA source records; recipe totals remain estimates.
 export const ingredients={
