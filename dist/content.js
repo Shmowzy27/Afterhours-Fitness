@@ -1,6 +1,7 @@
-import {nutritionData} from './nutrition-data.js?v=20260922-12';
+import {foodCatalog} from './food-catalog.js?v=20260923-13';
+import {extraRecipes} from './extra-recipes.js?v=20260923-13';
 // Default prices are editable Perth supermarket estimates in AUD.
-// Nutrients are replaced below by the extracted USDA source records; recipe totals remain estimates.
+// Nutrients are replaced below by the extracted FSANZ AFCD records; recipe totals remain estimates.
 export const ingredients={
  rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:3.2,measure:'~½ cup per 90 g',allergens:[]},
  oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:2.4,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
@@ -22,7 +23,7 @@ export const ingredients={
  vinegar:{name:'Cane vinegar',kcal:18.0,protein:0.0,pack:500,price:2.5,measure:'1 tbsp ≈ 15 g',allergens:[]},
  soy:{name:'Soy sauce',kcal:53.0,protein:8.14,pack:500,price:3.0,measure:'1 tbsp ≈ 15 g',allergens:['soy','gluten']}
 };
-for(const [id,record] of Object.entries(nutritionData)){ingredients[id].kcal=record.kcal;ingredients[id].protein=record.protein;ingredients[id].nutritionSource=record;}
+Object.assign(ingredients,foodCatalog);
 const storage='Refrigerate within 2 hours (1 hour above 32°C), in shallow sealed containers. Keep chilled up to 3–4 days or freeze portions promptly. Reheat leftovers to 74°C throughout. Cool rice promptly; never leave it on the counter overnight.';
 export const recipes=[
 {id:'silog',name:'Egg & tomato rice bowl',tag:'Breakfast staple',time:20,prep:5,cook:15,gear:['stove'],items:{rice:80,egg:100,tomato:100,oil:5},steps:['Rinse the raw rice. Cook with water according to its package instructions.','Dice the tomato. Heat oil in a pan; soften the tomato for 2 minutes.','Add beaten eggs and stir until fully set. Serve over the cooked rice.'],subs:'Swap tomato for cabbage by choosing another matching recipe. For egg allergy, choose the tofu bowl.',storage},
@@ -36,6 +37,10 @@ export const recipes=[
 {id:'tuna',name:'Tuna, tomato & rice',tag:'Quick assembly',time:20,prep:5,cook:15,gear:['rice cooker'],items:{tuna:120,rice:90,tomato:150,carrot:60,oil:5},steps:['Cook raw rice in a rice cooker according to the rice instructions.','Wash and dice tomato; grate the carrot. Open and drain the tuna.','Combine tuna and vegetables with oil. Serve with freshly cooked rice.'],subs:'For fish allergy select a non-fish recipe. Use canned tuna with a compatible ingredient label.',storage},
 {id:'overnight',name:'Banana overnight oats',tag:'No-cook option',time:5,prep:5,cook:0,gear:['fridge'],items:{oats:100,banana:150},steps:['Mix oats with 200 ml drinking water in a clean covered container.','Refrigerate overnight, at least 6 hours.','Slice banana over the oats just before eating. This is a lighter-protein meal; review the daily protein total.'],subs:'Do not use for gluten restrictions unless a separately verified gluten-free recipe is added.',storage:'Keep refrigerated and eat within 24 hours. Do not soak at room temperature.'}
 ];
+recipes.forEach(r=>{r.servings=1;r.mealType=['silog','oats','overnight'].includes(r.id)?'breakfast':'dinner';});
+recipes.push(...extraRecipes);
+export const baseIngredients=structuredClone(ingredients),baseRecipes=structuredClone(recipes);
+export function configureFood(state){for(const key of Object.keys(ingredients))delete ingredients[key];Object.assign(ingredients,structuredClone(baseIngredients),state.customIngredients||{});recipes.splice(0,recipes.length,...structuredClone(baseRecipes),...(state.customRecipes||[]));}
 export const exercises=[
 {id:'squat',gymPreferred:true,name:'Goblet squat',equipment:['dumbbell'],pattern:'squat',reps:[8,12],rest:90,cues:'Hold one dumbbell at your chest. Sit between your hips; keep the whole foot planted. Stand without bouncing.',limits:['knee'],unit:'one dumbbell'},
 {id:'sit',name:'Bodyweight squat',level:0,equipment:[],pattern:'squat',reps:[8,15],rest:60,cues:'Stand with feet comfortably apart. Lower only as far as comfortable, then press through the whole foot.',limits:['knee'],unit:'bodyweight'},
@@ -58,7 +63,7 @@ export const exercises=[
 ];
 export const sources=[
 ['Resistance training evidence · ACSM 2026 position stand','https://pubmed.ncbi.nlm.nih.gov/41843416/'],
-['USDA FoodData Central · source dataset','https://fdc.nal.usda.gov/download-datasets/'],
+['Australian food records','https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd/data-files'],
 ['Activity guidance · CDC','https://www.cdc.gov/physical-activity-basics/guidelines/adults.html'],
 ['Philippine food reference · DOST-FNRI PhilFCT','https://i.fnri.dost.gov.ph/fct/library'],
 ['Energy equation · Mifflin et al. (1990)','https://pubmed.ncbi.nlm.nih.gov/2305711/'],
