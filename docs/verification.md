@@ -15,7 +15,7 @@
 - Actual Safari offline launch after installation and login to private hosting.
 - Actual notification appearance, Focus permissions, and imported Calendar alerts firing.
 - Background push remains disconnected: no authenticated provider account/scheduler is configured. Calendar fallback is explicit, and old calendar events must be replaced after plan edits.
-- Nutrient and local-price accuracy: prices are not verified local quotes; USDA nutrient inputs are now traceable, but recipe totals and ingredient proxy matches remain estimates. Direct PhilFCT nutrient extraction was unavailable.
+- Nutrient and local-price accuracy: prices are not verified local quotes; regional nutrient inputs are traceable, but recipe totals and ingredient proxy matches remain estimates. Philippine foods use the DOST-FNRI reference.
 
 All test records were confined to isolated browser contexts. The delivered app starts with no personal records.
 
@@ -23,7 +23,7 @@ All test records were confined to isolated browser contexts. The delivered app s
 
 - Automated TDEE calculation and invalid/missing input handling.
 - Schedule suggestions across midnight, late waking, and unavailable backup windows.
-- Every bundled ingredient uses the extracted official USDA record values; proxy notes retained.
+- Bundled food records use the supported AFCD, FNRI, and HPB composition sources.
 - All ten exercises have external demonstration links; all ten recipes have cooking-video search links. Publisher pages/video identities checked through web research; actual playback depends on their availability.
 
 - Readiness: normal/lighter/recovery paths; recovery removes the pending workout without touching completed history.
@@ -49,7 +49,7 @@ All test records were confined to isolated browser contexts. The delivered app s
 ## Editorial and evidence review — 2026-09-22
 
 - Replaced broad motivational slogans with direct descriptions of the schedule, meal filters, training session, and saved records.
-- Added an in-app methods panel and a public methods document naming the ACSM position stand, CDC adult activity guidance, Mifflin–St Jeor equation, Morton protein meta-analysis, and USDA FoodData Central dataset.
+- Added an in-app methods panel and a public methods document naming the ACSM position stand, CDC adult activity guidance, Mifflin–St Jeor equation, Morton protein meta-analysis, and regional AFCD, FNRI, and HPB composition sources.
 - Distinguished source findings from product implementation rules and stated that the complete program has not been tested as a clinical intervention.
 - Fixed service-worker cache cleanup so this revision replaces older installed shells.
 - All 36 unit checks and the four primary browser flows passed in Chrome at desktop and phone sizes. No horizontal document overflow or page JavaScript errors were found.

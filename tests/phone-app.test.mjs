@@ -5,7 +5,7 @@ import * as C from '../dist/core.js';
 
 test('new plans start in Perth with native AUD prices',()=>{
   assert.deepEqual(C.regionDefaults,{city:'perth',currency:'AUD',rate:1});
-  assert.deepEqual(C.currencyRates,{AUD:1,PHP:38,USD:.66,SGD:.85});
+  assert.deepEqual(C.currencyRates,{AUD:1,PHP:38,SGD:.85});
   assert.equal(C.cityInfo(C.defaults).zone,'Australia/Perth');
   assert.equal(C.defaults.budget,100);
 });
@@ -31,5 +31,5 @@ test('PWA manifest and cache list include phone install assets',()=>{
   assert.equal(manifest.screenshots.length,2);
   assert.ok(manifest.icons.some(x=>x.purpose==='maskable'));
   const sw=fs.readFileSync(new URL('../dist/sw.js',import.meta.url),'utf8');
-  for(const file of ['core.js?v=','content.js?v=','nutrition-data.js?v=','icon-180.png?v=','screenshots/today.png?v='])assert.match(sw,new RegExp(file.replace(/[.?]/g,'\\$&')));
+  for(const file of ['core.js?v=','content.js?v=','icon-180.png?v=','screenshots/today.png?v='])assert.match(sw,new RegExp(file.replace(/[.?]/g,'\\$&')));
 });

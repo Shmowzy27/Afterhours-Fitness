@@ -1,19 +1,17 @@
-import {validateFoodExtension} from './food-store.js?v=20260923-16';
-import {ingredients,recipes,exercises,baseIngredients as catalogIngredients,baseRecipes as catalogRecipes} from './content.js?v=20260923-16';
-import {isLocalRecipe,supplementalIngredients} from './regional-food.js?v=20260923-16';
+import {validateFoodExtension} from './food-store.js?v=20260923-17';
+import {ingredients,recipes,exercises,baseIngredients as catalogIngredients,baseRecipes as catalogRecipes} from './content.js?v=20260923-17';
+import {isLocalRecipe,supplementalIngredients} from './regional-food.js?v=20260923-17';
 export const VERSION=1;
 export const cities=[
  ...['Manila','Davao','Cebu','Quezon City','Baguio','Iloilo','Bacolod','Cagayan de Oro','Zamboanga'].map(name=>({id:name.toLowerCase().replaceAll(' ','-'),name,country:'Philippines',zone:'Asia/Manila'})),
  ...[['Perth','Australia/Perth'],['Sydney','Australia/Sydney'],['Melbourne','Australia/Melbourne'],['Brisbane','Australia/Brisbane'],['Gold Coast','Australia/Brisbane'],['Adelaide','Australia/Adelaide'],['Darwin','Australia/Darwin'],['Hobart','Australia/Hobart'],['Canberra','Australia/Sydney']].map(([name,zone])=>({id:name.toLowerCase().replaceAll(' ','-'),name,country:'Australia',zone})),
  ...['Singapore','Jurong East','Tampines','Woodlands','Punggol','Queenstown'].map(name=>({id:name.toLowerCase().replaceAll(' ','-'),name,country:'Singapore',zone:'Asia/Singapore'}))
- ,...[['New York','America/New_York'],['Los Angeles','America/Los_Angeles'],['Chicago','America/Chicago'],['Houston','America/Chicago'],['Seattle','America/Los_Angeles'],['San Francisco','America/Los_Angeles']].map(([name,zone])=>({id:name.toLowerCase().replaceAll(' ','-'),name,country:'United States',zone}))
- ,{id:'other',name:'Other',country:'Other',zone:'UTC'}
 ];
 export const cityInfo=p=>cities.find(c=>c.id===p?.city)||cities.find(c=>c.id==='perth');
-export const currencies=['PHP','USD','SGD','AUD'];
-export const currencyRates={AUD:1,PHP:38,USD:.66,SGD:.85};
+export const currencies=['AUD','PHP','SGD'];
+export const currencyRates={AUD:1,PHP:38,SGD:.85};
 export const regionDefaults={city:'perth',currency:'AUD',rate:1};
-export function formatMoney(n,region=regionDefaults){const value=n*region.rate,prefix={AUD:'A$',USD:'US$',SGD:'S$',PHP:'₱'}[region.currency]||region.currency+' ';return prefix+new Intl.NumberFormat('en',{minimumFractionDigits:region.currency==='PHP'?0:2,maximumFractionDigits:2}).format(value);}
+export function formatMoney(n,region=regionDefaults){const value=n*region.rate,prefix={AUD:'A$',SGD:'S$',PHP:'₱'}[region.currency]||region.currency+' ';return prefix+new Intl.NumberFormat('en',{minimumFractionDigits:region.currency==='PHP'?0:2,maximumFractionDigits:2}).format(value);}
 export function zonedTime(day,time,zone='Asia/Manila'){
  const target=Date.parse(day+'T'+time+':00Z');
  const formatter=new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});

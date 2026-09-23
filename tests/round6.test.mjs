@@ -72,7 +72,7 @@ Ingredients:
 });
 
 test('uses local packs, prices and round budgets',()=>{
- const manila=cityInfo({city:'manila'}),perth=cityInfo({city:'perth'}),singapore=cityInfo({city:'singapore'}),newYork=cityInfo({city:'new-york'});
+ const manila=cityInfo({city:'manila'}),perth=cityInfo({city:'perth'}),singapore=cityInfo({city:'singapore'});
  const localIngredients=structuredClone(foodCatalog);
  applyRegionalCatalog(localIngredients,[],{region:{city:'manila',shop:'Puregold'}},manila);
  assert.equal(localIngredients.rice.name,'Bigas');
@@ -82,12 +82,10 @@ test('uses local packs, prices and round budgets',()=>{
  assert.equal(defaultBudget(manila),4500);
  assert.equal(defaultBudget(perth),100);
  assert.equal(defaultBudget(singapore),120);
- assert.equal(defaultBudget(newYork),75);
  assert.equal(reviewed(manila),'Sep 2026');
  assert.ok(shops(manila).includes('Palengke'));
  assert.equal(formatMoney(100,{currency:'PHP',rate:1}),'₱100');
  assert.equal(formatMoney(10,{currency:'AUD',rate:1}),'A$10.00');
- assert.equal(formatMoney(10,{currency:'USD',rate:1}),'US$10.00');
  assert.equal(formatMoney(10,{currency:'SGD',rate:1}),'S$10.00');
 });
 
