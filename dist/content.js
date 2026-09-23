@@ -1,6 +1,6 @@
-import {foodCatalog} from './food-catalog.js?v=20260923-16';
-import {extraRecipes} from './extra-recipes.js?v=20260923-16';
-import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260923-16';
+import {foodCatalog} from './food-catalog.js?v=20260923-17';
+import {extraRecipes} from './extra-recipes.js?v=20260923-17';
+import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260923-17';
 export const ingredients={
  rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:3.2,measure:'~½ cup per 90 g',allergens:[]},
  oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:2.4,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
@@ -66,6 +66,7 @@ export const sources=[
 ['Australian food records','https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd/data-files'],
 ['Activity guidance · CDC','https://www.cdc.gov/physical-activity-basics/guidelines/adults.html'],
 ['Philippine food reference · DOST-FNRI PhilFCT','https://i.fnri.dost.gov.ph/fct/library'],
+['Singapore food reference · Health Promotion Board','https://focos.hpb.gov.sg/eservices/ENCF/'],
 ['Energy equation · Mifflin et al. (1990)','https://pubmed.ncbi.nlm.nih.gov/2305711/'],
 ['Protein & resistance training · Morton et al. (2018)','https://pubmed.ncbi.nlm.nih.gov/28698222/'],
 ['Leftover storage · USDA FSIS','https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/leftovers-and-food-safety'],

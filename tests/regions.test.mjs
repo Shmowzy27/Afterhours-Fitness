@@ -23,7 +23,6 @@ test('waking day follows city and overnight records remain intact',()=>{
  assert.match(C.calendar(s),/Australia\/Sydney/);assert.equal(JSON.stringify(s.plan),before);
 });
 test('currency conversions and backward compatible backup validation',()=>{
- assert.match(C.formatMoney(1000,{currency:'USD',rate:.02}),/20\.00/);
  assert.match(C.formatMoney(1000,{currency:'SGD',rate:.025}),/25\.00/);
  assert.doesNotThrow(()=>C.validateBackup(C.fresh()));
  const s=C.fresh();s.region={city:'tampines',currency:'SGD',rate:.025};assert.doesNotThrow(()=>C.validateBackup(s));

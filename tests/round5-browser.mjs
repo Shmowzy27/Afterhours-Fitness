@@ -4,7 +4,7 @@ import * as C from '../dist/core.js';
 
 const browser=process.env.WEBKIT?await webkit.launch():await chromium.launch({headless:true,...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{})});
 const context=await browser.newContext({viewport:{width:375,height:812},isMobile:true,hasTouch:true,serviceWorkers:'block'});
-await context.route('https://open.er-api.com/**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({result:'success',base_code:'AUD',rates:{AUD:1,USD:.5,PHP:40,SGD:.8}})}));
+await context.route('https://open.er-api.com/**',route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({result:'success',base_code:'AUD',rates:{AUD:1,PHP:40,SGD:.8}})}));
 const page=await context.newPage(),errors=[];
 page.on('pageerror',error=>errors.push(error.message));
 const state=C.fresh();state.profile=structuredClone(C.defaults);state.plan=C.buildPlan(state.profile,C.wakingDay(state.profile));state.region={city:'perth',currency:'AUD',rate:1};
@@ -63,12 +63,12 @@ assert.equal(await page.evaluate(()=>scrollY),recipeScroll);
 
 await page.locator('[data-action="region"]').click();
 assert.equal(await page.locator('#region-form [name="rate"]').count(),0);
-await page.locator('#region-form [name="currency"]').selectOption('USD');
+await page.locator('#region-form [name="currency"]').selectOption('SGD');
 await page.locator('#region-form button[type="submit"]').click();
-await page.waitForFunction(()=>{const region=JSON.parse(localStorage.getItem('afterhours.v1')).region;return region.currency==='USD'&&region.rate===.5;});
+await page.waitForFunction(()=>{const region=JSON.parse(localStorage.getItem('afterhours.v1')).region;return region.currency==='SGD'&&region.rate===.8;});
 const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('afterhours.v1')));
-assert.equal(saved.region.rate,.5);
-assert.match(await page.locator('.schedule-button').innerText(),/USD/);
+assert.equal(saved.region.rate,.8);
+assert.match(await page.locator('.schedule-button').innerText(),/SGD/);
 assert.match(await page.locator('.budget-strip').innerText(),/\$/);
 
 const navStyle=await page.locator('.site-header nav').evaluate(el=>({blur:getComputedStyle(el).backdropFilter,background:getComputedStyle(el).backgroundColor}));

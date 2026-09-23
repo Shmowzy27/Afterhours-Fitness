@@ -27,10 +27,11 @@ The optional protein target is 1.6 g per kg of body weight. A 2018 meta-analysis
 
 ## Food data and recipes
 
-Ingredient energy and protein values are extracted from the USDA FoodData Central SR Legacy April 2018 dataset. Each ingredient in the app retains the exact FoodData Central record link and a proxy note where the record is not an exact match. Recipe totals are arithmetic estimates from raw edible weights; the cooked recipes have not been laboratory tested.
+Food composition uses the closest supported regional source: FSANZ AFCD for Australia, DOST-FNRI for the Philippines, and Health Promotion Board references for Singapore. Open Food Facts supplies packaged products and barcode matches. Recipe totals are arithmetic estimates from edible weights.
 
-- USDA Agricultural Research Service. [FoodData Central downloadable datasets](https://fdc.nal.usda.gov/download-datasets/)
+- FSANZ. [Australian Food Composition Database](https://www.foodstandards.gov.au/science-data/food-nutrient-databases/afcd/data-files)
 - DOST-FNRI. [Philippine Food Composition Table Online](https://i.fnri.dost.gov.ph/fct/library)
+- Singapore Health Promotion Board. [Energy and Nutrient Composition of Food](https://focos.hpb.gov.sg/eservices/ENCF/)
 - USDA Food Safety and Inspection Service. [Leftovers and food safety](https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/food-safety-basics/leftovers-and-food-safety)
 
 Starting prices are editable placeholders. They are not live market prices. Allergy filtering can only act on declared ingredients and cannot verify manufacturing cross-contact or product labels.

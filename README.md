@@ -6,7 +6,7 @@ A local-first fitness planner for people whose waking day does not fit a typical
 
 - Schedule-aware meal and workout suggestions for workdays and days off
 - Time-zone support for cities in the Philippines, Australia, and Singapore
-- PHP, USD, SGD, and AUD display with a user-entered planning exchange rate
+- AUD, PHP, and SGD display with current planning exchange rates
 - Equipment-aware strength sessions, technique cues, readiness choices, and conservative load progression
 - Meal recommendations filtered by allergies, diet, kitchen equipment, and preparation time
 - Complete recipes, embedded cooking and exercise tutorials, and a consolidated grocery list
@@ -41,7 +41,7 @@ Connect this repository to a Cloudflare Pages project. Leave the build command e
 
 Personal records are stored in the browser under the `afterhours.v1` local-storage key. They are not included in the repository or uploaded by the app. Export a JSON backup before clearing browser data or moving to another device.
 
-Nutrition values are calculated from the cited USDA FoodData Central records in `docs/nutrition-provenance.json`. Prices and currency conversions are planning estimates. Exercise and nutrition guidance is educational and cannot guarantee individual results.
+Food composition uses FSANZ AFCD for Australia, DOST-FNRI for the Philippines, and Health Promotion Board references for Singapore. Open Food Facts supplies packaged products and barcodes. Prices and currency conversions are planning estimates.
 
 The calculation rules and primary references are documented in [`docs/methods.md`](docs/methods.md).
 
@@ -50,7 +50,6 @@ The calculation rules and primary references are documented in [`docs/methods.md
 - `dist/` — complete static application
 - `tests/` — unit and browser checks
 - `docs/` — verification and data provenance
-- `scripts/` — reproducible nutrition-data extraction
 - `server.mjs` — local static server
 
 The app is dependency-free at runtime. Playwright is used only for browser verification.
