@@ -1,7 +1,6 @@
-import {foodCatalog} from './food-catalog.js?v=20260923-14';
-import {extraRecipes} from './extra-recipes.js?v=20260923-14';
-// Default prices are editable Perth supermarket estimates in AUD.
-// Nutrients are replaced below by the extracted FSANZ AFCD records; recipe totals remain estimates.
+import {foodCatalog} from './food-catalog.js?v=20260923-15';
+import {extraRecipes} from './extra-recipes.js?v=20260923-15';
+import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260923-15';
 export const ingredients={
  rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:3.2,measure:'~½ cup per 90 g',allergens:[]},
  oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:2.4,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
@@ -24,6 +23,7 @@ export const ingredients={
  soy:{name:'Soy sauce',kcal:53.0,protein:8.14,pack:500,price:3.0,measure:'1 tbsp ≈ 15 g',allergens:['soy','gluten']}
 };
 Object.assign(ingredients,foodCatalog);
+
 const storage='Refrigerate within 2 hours (1 hour above 32°C), in shallow sealed containers. Keep chilled up to 3–4 days or freeze portions promptly. Reheat leftovers to 74°C throughout. Cool rice promptly; never leave it on the counter overnight.';
 export const recipes=[
 {id:'silog',name:'Egg & tomato rice bowl',tag:'Breakfast staple',time:20,prep:5,cook:15,gear:['stove'],items:{rice:80,egg:100,tomato:100,oil:5},steps:['Rinse the raw rice. Cook with water according to its package instructions.','Dice the tomato. Heat oil in a pan; soften the tomato for 2 minutes.','Add beaten eggs and stir until fully set. Serve over the cooked rice.'],subs:'Swap tomato for cabbage by choosing another matching recipe. For egg allergy, choose the tofu bowl.',storage},
@@ -40,7 +40,7 @@ export const recipes=[
 recipes.forEach(r=>{r.servings=1;r.mealType=['silog','oats','overnight'].includes(r.id)?'breakfast':'dinner';});
 recipes.push(...extraRecipes);
 export const baseIngredients=structuredClone(ingredients),baseRecipes=structuredClone(recipes);
-export function configureFood(state){for(const key of Object.keys(ingredients))delete ingredients[key];Object.assign(ingredients,structuredClone(baseIngredients),state.customIngredients||{});recipes.splice(0,recipes.length,...structuredClone(baseRecipes),...(state.customRecipes||[]));}
+export function configureFood(state){for(const key of Object.keys(ingredients))delete ingredients[key];Object.assign(ingredients,structuredClone(baseIngredients),state.customIngredients||{});recipes.splice(0,recipes.length,...structuredClone(baseRecipes),...(state.customRecipes||[]));applyRegionalCatalog(ingredients,recipes,state,countryForCity(state.region?.city||state.profile?.city||'perth'));}
 export const exercises=[
 {id:'squat',gymPreferred:true,name:'Goblet squat',equipment:['dumbbell'],pattern:'squat',reps:[8,12],rest:90,cues:'Hold one dumbbell at your chest. Sit between your hips; keep the whole foot planted. Stand without bouncing.',limits:['knee'],unit:'one dumbbell'},
 {id:'sit',name:'Bodyweight squat',level:0,equipment:[],pattern:'squat',reps:[8,15],rest:60,cues:'Stand with feet comfortably apart. Lower only as far as comfortable, then press through the whole foot.',limits:['knee'],unit:'bodyweight'},
@@ -73,7 +73,6 @@ export const sources=[
 ['Free push service researched · OneSignal','https://onesignal.com/pricing']
 ];
 
-// Publisher pages and video identities checked 2026-09-21. External playback needs internet.
 export const exerciseVideos={
  squat:{url:'https://www.muscleandstrength.com/exercises/dumbbell-goblet-squat',source:'Muscle & Strength'},
  sit:{url:'https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/squat/vid-20084663',source:'Mayo Clinic'},
@@ -102,7 +101,6 @@ export const cookingVideos={
 };
 export function cookingSearch(r){const queries={silog:'tomato scrambled egg rice recipe tutorial',oats:'banana oatmeal boiled eggs preparation tutorial',tofu:'tofu cabbage carrot stir fry recipe tutorial',chicken:'chicken cabbage carrot stir fry tutorial',tuna:'canned tuna tomato rice bowl recipe',overnight:'banana overnight oats with water recipe'};return 'https://www.youtube.com/results?search_query='+encodeURIComponent(queries[r.id]||r.name+' cooking tutorial');}
 
-// Embed IDs read from the publishers' own video links, checked 2026-09-21.
 const exerciseEmbedIds={squat:'5Y3KW5rWMh4',sit:'aclHkVaku9U',rdl:'MAa24xjE9kk',bridge:'mm4wbmtDrUc',floor:'gaBOfLlIXjs',bench:'dGqI0Z5ul4k',wall:'ze4qofHM20k',row:'quzRjX0Pbs4',prone:'9flgfMgmwl4',deadbug:'eEhoSeBFoBk',inclinepush:'cfns5VDVVvk',pushup:'pKZ-lkKKMws',split:'hXpGSa5HYqY',singlebridge:'AVAXhy6pl7o',barbellsquat:'dW3zj79xfrc',barbellbench:'hWbUlkb5Ms4',latpull:'bNmvKpJSWKM',legpress:'EotSw18oR9w'};
 for(const [id,youtube]of Object.entries(exerciseEmbedIds))exerciseVideos[id].youtube=youtube;
 Object.assign(exerciseVideos.sit,{url:'https://www.mayoclinic.org/healthy-lifestyle/fitness/multimedia/squat/vid-20084663',source:'Mayo Clinic',youtube:'aclHkVaku9U'});

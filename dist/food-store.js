@@ -1,4 +1,3 @@
-// Food records keep a nutrition and price snapshot so later catalog edits do not rewrite history.
 export const nutrientKeys=['kcal','protein','carbs','fat','cost'];
 export const zero=()=>Object.fromEntries(nutrientKeys.map(k=>[k,0]));
 export function totals(entries){return entries.reduce((a,e)=>{for(const k of nutrientKeys)a[k]+=e.nutrition?.[k]||0;return a;},zero());}

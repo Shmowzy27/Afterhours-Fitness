@@ -1,4 +1,3 @@
-// Nutrition extracted from FSANZ AFCD Release 3, nutrient profiles per 100 g. Energy kJ / 4.184. Prices are editable AUD estimates.
 export const foodCatalog = {
   "rice": {
     "name": "White rice, dry",
