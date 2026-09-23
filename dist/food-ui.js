@@ -7,7 +7,7 @@ import {active,id as recordId,stamp,tombstone} from './storage.js?v=20260923-16'
 export function createFoodUI(api){const {esc,field,select,check,btn,modal,close,save,money,amount,baseAmount,today}=api,s=()=>api.state(),p=()=>s().profile||C.defaults;
 	let filters={type:'all',sort:'cost',cost:'',protein:'',time:'',vegetarian:false},ingredientSearch='',recipeSearch='',recipeChips=[],recipeDraft=null,entryDraft=null,importedDraft=null,visibleRecipes=12,showAllRegions=false,addTab='recent',targetMeal='breakfast';
 const uid=()=> 'custom-'+crypto.randomUUID();
-const API_BASE=location.hostname.endsWith('chatgpt.site')?'https://afterhours-fitness.pages.dev':'';
+const API_BASE=location.hostname.endsWith('pages.dev')||['localhost','127.0.0.1'].includes(location.hostname)?'':'https://afterhours-fitness.pages.dev';
 const allowedIngredients=()=>Object.entries(ingredients).filter(([id])=>!s().hiddenIngredients.includes(id));
 const macros=n=>`${Math.round(n.kcal)} kcal · ${Math.round(n.protein)} g protein · ${Math.round(n.carbs)} g carbs · ${Math.round(n.fat)} g fat`;
 const optionList=()=>allowedIngredients().map(([id,i])=>[id,i.name]);
