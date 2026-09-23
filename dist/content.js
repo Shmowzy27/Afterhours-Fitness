@@ -1,5 +1,5 @@
-import {foodCatalog} from './food-catalog.js?v=20260923-13';
-import {extraRecipes} from './extra-recipes.js?v=20260923-13';
+import {foodCatalog} from './food-catalog.js?v=20260923-14';
+import {extraRecipes} from './extra-recipes.js?v=20260923-14';
 // Default prices are editable Perth supermarket estimates in AUD.
 // Nutrients are replaced below by the extracted FSANZ AFCD records; recipe totals remain estimates.
 export const ingredients={
