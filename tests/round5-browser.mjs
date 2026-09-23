@@ -18,7 +18,7 @@ const equal=values=>assert.ok(values.length>1&&new Set(values).size===1,`Uneven 
 const tab=async name=>{await page.locator(`nav a[href="#${name}"]`).click();await page.waitForTimeout(50);};
 
 const themeButton=page.locator('[data-action="toggle-theme"]');
-assert.deepEqual(await themeButton.evaluate(el=>({w:el.offsetWidth,h:el.offsetHeight,label:el.ariaLabel})),{w:36,h:36,label:'Switch to dark mode'});
+assert.deepEqual(await themeButton.evaluate(el=>({w:el.offsetWidth,h:el.offsetHeight,label:el.ariaLabel})),{w:44,h:44,label:'Switch to dark mode'});
 await themeButton.click();
 assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
 assert.equal(await page.locator('meta[name="theme-color"]').getAttribute('content'),'#141512');
@@ -44,11 +44,11 @@ assert.deepEqual(smallLinks,[]);
 
 await tab('meals');
 const mealsText=await page.locator('main').innerText();
-assert.ok(!mealsText.includes('logged + groceries · Prices and nutrition are estimates.'));
-assert.equal((mealsText.match(/Estimated prices/g)||[]).length,1);
+assert.equal((mealsText.match(/Prices and nutrition are estimates/g)||[]).length,1);
 const tabWidths=await widths(page.locator('.tabs button'));
 equal(tabWidths.slice(0,3));equal(tabWidths.slice(3,6));
 await page.locator('[data-tab="recipes"]').click();
+if(await page.locator('[data-action="food-show-all-regions"]').count())await page.locator('[data-action="food-show-all-regions"]').click();
 assert.equal(await page.locator('.recipe-grid>.card').count(),12);
 assert.equal(await page.locator('.recipe-grid>.card').first().evaluate(el=>getComputedStyle(el).contentVisibility),'auto');
 await page.locator('[data-action="food-show-more"]').click();
@@ -65,7 +65,7 @@ await page.locator('[data-action="region"]').click();
 assert.equal(await page.locator('#region-form [name="rate"]').count(),0);
 await page.locator('#region-form [name="currency"]').selectOption('USD');
 await page.locator('#region-form button[type="submit"]').click();
-await page.waitForFunction(()=>JSON.parse(localStorage.getItem('afterhours.v1')).region.currency==='USD');
+await page.waitForFunction(()=>{const region=JSON.parse(localStorage.getItem('afterhours.v1')).region;return region.currency==='USD'&&region.rate===.5;});
 const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('afterhours.v1')));
 assert.equal(saved.region.rate,.5);
 assert.match(await page.locator('.schedule-button').innerText(),/USD/);

@@ -1,4 +1,3 @@
-// Extracted from the official USDA SR Legacy archive. Do not hand-edit nutrient values.
 export const nutritionData = {
   "rice": {
     "fdcId": "169756",
