@@ -22,7 +22,7 @@ assert.deepEqual(await themeButton.evaluate(el=>({w:el.offsetWidth,h:el.offsetHe
 await themeButton.click();
 assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
 assert.equal(await page.locator('meta[name="theme-color"]').getAttribute('content'),'#141512');
-assert.equal(await page.evaluate(()=>localStorage.getItem('afterhours.theme')),'dark');
+assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('afterhours.theme'))),'dark');
 await page.reload();
 assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
 assert.equal(await themeButton.getAttribute('aria-label'),'Switch to light mode');

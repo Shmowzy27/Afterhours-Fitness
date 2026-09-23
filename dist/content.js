@@ -1,6 +1,6 @@
-import {foodCatalog} from './food-catalog.js?v=20260923-15';
-import {extraRecipes} from './extra-recipes.js?v=20260923-15';
-import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260923-15';
+import {foodCatalog} from './food-catalog.js?v=20260923-16';
+import {extraRecipes} from './extra-recipes.js?v=20260923-16';
+import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260923-16';
 export const ingredients={
  rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:3.2,measure:'~½ cup per 90 g',allergens:[]},
  oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:2.4,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
@@ -40,7 +40,7 @@ export const recipes=[
 recipes.forEach(r=>{r.servings=1;r.mealType=['silog','oats','overnight'].includes(r.id)?'breakfast':'dinner';});
 recipes.push(...extraRecipes);
 export const baseIngredients=structuredClone(ingredients),baseRecipes=structuredClone(recipes);
-export function configureFood(state){for(const key of Object.keys(ingredients))delete ingredients[key];Object.assign(ingredients,structuredClone(baseIngredients),state.customIngredients||{});recipes.splice(0,recipes.length,...structuredClone(baseRecipes),...(state.customRecipes||[]));applyRegionalCatalog(ingredients,recipes,state,countryForCity(state.region?.city||state.profile?.city||'perth'));}
+export function configureFood(state){for(const key of Object.keys(ingredients))delete ingredients[key];const ownIngredients=Object.fromEntries(Object.entries(state.customIngredients||{}).filter(([,item])=>!item.deletedAt));Object.assign(ingredients,structuredClone(baseIngredients),ownIngredients);recipes.splice(0,recipes.length,...structuredClone(baseRecipes),...(state.customRecipes||[]).filter(recipe=>!recipe.deletedAt));applyRegionalCatalog(ingredients,recipes,state,countryForCity(state.region?.city||state.profile?.city||'perth'));globalThis.__afterhoursIngredients=ingredients;globalThis.__afterhoursRecipes=recipes;}
 export const exercises=[
 {id:'squat',gymPreferred:true,name:'Goblet squat',equipment:['dumbbell'],pattern:'squat',reps:[8,12],rest:90,cues:'Hold one dumbbell at your chest. Sit between your hips; keep the whole foot planted. Stand without bouncing.',limits:['knee'],unit:'one dumbbell'},
 {id:'sit',name:'Bodyweight squat',level:0,equipment:[],pattern:'squat',reps:[8,15],rest:60,cues:'Stand with feet comfortably apart. Lower only as far as comfortable, then press through the whole foot.',limits:['knee'],unit:'bodyweight'},
