@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as C from '../dist/core.js';
 import {migrateState} from '../dist/storage.js';
 import {regionNames,defaultBudget} from '../dist/regional-food.js';
+import {onRequestPost as readVision} from '../functions/api/vision.js';
 
 test('only the three supported regions and currencies remain',()=>{
  assert.deepEqual(regionNames,['Australia','Philippines','Singapore']);
@@ -31,4 +32,18 @@ test('photo reader preserves natural resolution and refuses weak OCR',async()=>{
  const ui=await (await import('node:fs/promises')).readFile(new URL('../dist/food-ui.js',import.meta.url),'utf8');
  assert.match(ui,/confidence<70\|\|result\.junkShare>1\/3/);
  assert.match(ui,/Couldn’t read that clearly/);
+});
+
+test('server photo reader unwraps the Workers AI binding response',async()=>{
+ const form=new FormData();
+ form.append('photo',new File(['photo'], 'recipe.jpg',{type:'image/jpeg'}));
+ form.append('mode','recipe');
+ const response=await readVision({request:new Request('https://example.test/api/vision',{method:'POST',body:form}),env:{VISION:{run:async()=>({result:{answer:'2 eggs\n100 g rice'}})}}});
+ assert.equal(response.status,200);
+ assert.deepEqual(await response.json(),{text:'2 eggs\n100 g rice'});
+});
+
+test('server photo reader rejects malformed form data',async()=>{
+ const response=await readVision({request:new Request('https://example.test/api/vision',{method:'POST',body:'bad'}),env:{VISION:{run:async()=>{throw Error('should not run');}}}});
+ assert.equal(response.status,400);
 });
