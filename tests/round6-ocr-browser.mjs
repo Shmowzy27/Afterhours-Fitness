@@ -22,9 +22,9 @@ const reads=await page.evaluate(async()=>{
  return {light:await recognizePhotos([await screenshot(false)]),dark:await recognizePhotos([await screenshot(true)])};
 });
 for(const text of Object.values(reads)){
- assert.match(text,/2 eggs/i);
- assert.match(text,/1 cup rice/i);
- assert.doesNotMatch(text,/likes|comments/i);
+ assert.match(text.text,/2 eggs/i);
+ assert.match(text.text,/1 cup rice/i);
+ assert.doesNotMatch(text.text,/likes|comments/i);
 }
 process.stdout.write(JSON.stringify({light:true,dark:true,chromeRemoved:true})+'\n');
 await browser.close();

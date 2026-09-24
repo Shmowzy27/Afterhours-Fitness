@@ -41,8 +41,11 @@ export function migrateState(state){
  state.diaryNutrients??=['kcal','protein','carbs','fat'];
  state.photoConsent??='';
  state.recipePhotoConsent??='';
+ state.recipeHistory??=[];
+ state.blockedRecipes??={};
  const legacyCities=['new-york','los-angeles','chicago','houston','seattle','san-francisco','other'];if(state.region?.currency==='USD'||legacyCities.includes(state.region?.city)||legacyCities.includes(state.profile?.city)){state.region={city:'perth',currency:'AUD',rate:1};if(state.profile)state.profile.city='perth';}
  state.pantryHave??={};
+ if(state.profile)state.profile.cookTwice??=false;
  for(const group of recordGroups)if(Array.isArray(state[group]))state[group]=prune(state[group]);
  state.customIngredients=Object.fromEntries(Object.entries(state.customIngredients).filter(([,record])=>!record.deletedAt||Date.parse(record.deletedAt)>=Date.now()-30*86400000));
  for(const entry of state.foodEntries){entry.id||=id('food');entry.updatedAt||=now;entry.meal||='snacks';entry.unit||=(entry.kind==='recipe'?'serving':entry.kind==='ingredient'?'g':'serving');}

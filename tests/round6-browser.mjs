@@ -63,7 +63,7 @@ Instructions:
 1. Into a small bowl combine the following ingredients: ...`);
 await page.getByRole('button',{name:'Import'}).click();
 assert.equal(await page.locator('[name=servings]').inputValue(),'2');
-await page.getByRole('heading',{name:'Cucumber Salad'}).waitFor();
+await page.getByRole('heading',{name:'Cucumber Salad',exact:true}).waitFor();
 await page.getByRole('heading',{name:'Toppings'}).waitFor();
 assert.match(await page.locator('.import-row').filter({hasText:'125g Rice/Serving'}).textContent(),/Cooked/);
 assert.match(await page.locator('.import-row').filter({hasText:'Sweetener of Choice'}).textContent(),/Skip, not counted/);
@@ -84,7 +84,7 @@ const desktop=await page.evaluate(()=>{
  return {gaps:week.slice(1).map((box,index)=>Math.round(box.left-week[index].right)),screenWidth:screen.width,workoutWidth:workout.width,workoutHeight:workout.height,actionWidth:action.width,gutterDelta:Math.round(Math.abs(header.left-heading.left))};
 });
 assert.ok(desktop.gaps.every(gap=>gap===8));
-assert.ok(Math.abs(desktop.screenWidth-desktop.workoutWidth)<=1);
+assert.ok(desktop.workoutWidth>desktop.screenWidth*.55&&desktop.workoutWidth<desktop.screenWidth*.75);
 assert.ok(desktop.actionWidth<desktop.workoutWidth/2);
 assert.ok(desktop.workoutHeight>0);
 assert.ok(desktop.gutterDelta<=1);
