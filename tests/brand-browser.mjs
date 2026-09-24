@@ -11,7 +11,7 @@ for(let i=0;i<2;i++)await page.getByRole('button',{name:'Continue'}).click();
 await page.locator('.setup-place label').filter({hasText:'Gym'}).click();assert.equal(await page.locator('[name=trainingPlace]:checked').inputValue(),'gym');
 await page.locator('.setup-place label').filter({hasText:'Home'}).click();
 for(let i=0;i<2;i++)await page.getByRole('button',{name:'Continue'}).click();
-await page.getByRole('button',{name:'Review my plan'}).click();await page.getByRole('button',{name:'Accept & save my plan'}).click();
+await page.getByRole('button',{name:'Review my plan'}).click();await page.getByRole('button',{name:'Save plan'}).click();
 await page.locator('.week button').first().click();await page.evaluate(()=>document.fonts.ready);
 assert.equal(await page.locator('.brand').innerText(),'afterhours');
 await page.waitForTimeout(250);await page.evaluate(()=>document.querySelector('#toast').classList.remove('show'));await page.screenshot({path:'artifacts/round3-today.png'});await page.screenshot({path:'artifacts/brand-today.png'});

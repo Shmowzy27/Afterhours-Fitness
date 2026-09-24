@@ -32,7 +32,7 @@ assert.match(await page.locator('.calorie-summary').innerText(),/eaten/);
 assert.equal(await page.locator('.macro-summary>button').count(),3);
 assert.equal(await page.locator('.pinned-summary>button').count(),2);
 assert.match(await page.locator('.daily-cost').innerText(),/A\$/);
-assert.match(await page.locator('.missing-line').allInnerTexts().then(lines=>lines.join(' ')),/missing (fibre|sodium)/i);
+assert.equal(await page.locator('.missing-line').count(),0);
 const goalBefore=await page.locator('.calorie-summary').innerText();
 await page.evaluate(()=>{const saved=JSON.parse(localStorage.getItem('afterhours.v1')),day=saved.plan.start;saved.workouts=[{day,exercises:[{id:'sit',sets:[{reps:10,weight:0,rpe:7}]}],saved:new Date().toISOString()}];localStorage.setItem('afterhours.v1',JSON.stringify(saved));});await page.reload();assert.equal((await page.locator('.calorie-summary').innerText()).split('\n').at(-1),goalBefore.split('\n').at(-1));
 await page.getByRole('button',{name:'Full nutrition'}).click();await page.getByRole('heading',{name:'Nutrition'}).waitFor();
