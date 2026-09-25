@@ -66,9 +66,47 @@ const dinner=[
  ['beef-carrot-cabbage','Beef carrot cabbage',{beef:170,carrot:90,cabbage:150,garlic:5}]
 ];
 
-function recipe([id,name,items],mealType){
- const noCook=mealType==='breakfast'&&(/overnight|papaya oat/.test(id));
- return {id:`var-${id}`,name,mealType,servings:1,tag:mealType[0].toUpperCase()+mealType.slice(1),time:noCook?5:25,prep:noCook?5:8,cook:noCook?0:17,gear:noCook?['fridge']:['stove'],items,steps:noCook?['Combine the ingredients with drinking water in a covered container. Refrigerate overnight.']:['Prepare the vegetables and protein.','Cook the ingredients in a pan or pot until tender. Chicken must reach 74°C.','Season to taste and serve.'],subs:'Choose another meal from the same section',storage};
+function recipeSteps(id,items,noCook){
+ const has=key=>Object.hasOwn(items,key),produce=Object.keys(items).filter(key=>!['rice','oats','egg','chicken','beef','tofu','tuna','sardine','mung','oil','soy','vinegar'].includes(key));
+ if(noCook)return ['Put the oats in a covered container and stir in 2.5 times their weight in drinking water.','Cover and refrigerate for at least 6 hours.','Wash and cut the fruit just before eating.','Stir the oats, add a splash of water if they are too thick, then top with the fruit and serve cold.'];
+ if(id==='banana-oat-pancake')return ['Mash the banana in a bowl. Beat in the eggs, then stir in the oats and rest the batter for 5 minutes.','Heat half the oil in a non-stick pan over medium-low heat.','Spoon in small pancakes and cook for 2 to 3 minutes until the edges set.','Turn carefully, add the remaining oil as needed, and cook for 1 to 2 minutes until the centres are firm.','Serve hot.'];
+ if(id==='banana-rice-porridge')return ['Rinse the rice until the water is mostly clear.','Put the rice in a saucepan with 4 times its weight in water.','Bring to a boil, lower the heat, cover and simmer for 20 to 25 minutes, stirring twice, until very soft.','Mash half the banana and stir it through the porridge. Add water if needed for a spoonable texture.','Slice the remaining banana over the bowl and serve warm.'];
+ if(has('oats')){
+  const steps=['Put the oats in a saucepan with 3 times their weight in water.','Bring to a gentle simmer and cook for 5 to 7 minutes, stirring often so the oats do not catch.'];
+  if(has('carrot')||has('onion')||has('ginger'))steps.splice(1,0,'Wash, peel and finely cut the vegetables, then add them to the saucepan with the oats.');
+  if(has('egg'))steps.push('Beat the eggs, pour them slowly into the hot oats and stir over low heat until the eggs are fully set.');
+  if(has('banana')||has('papaya'))steps.push('Wash, peel and cut the fruit. Stir in half and use the rest as a topping.');
+  steps.push('Add a splash of water if the oats are too thick, then spoon into a bowl and serve warm.');
+  return steps;
+ }
+ const steps=[];
+ if(has('rice'))steps.push('Rinse the rice and cook it separately with water according to its package instructions. Keep covered.');
+ if(has('mung'))steps.push('Rinse the mung beans, cover with plenty of water and simmer for 30 to 40 minutes until soft. Drain only if the dish is not a soup.');
+ if(produce.length)steps.push(`Wash and cut the ${produce.join(', ')} into bite-size pieces.`);
+ if(has('egg'))steps.push('Crack the eggs into a bowl and beat until combined.');
+ if(has('tofu'))steps.push('Drain the tofu, pat it dry and cut it into bite-size pieces.');
+ if(has('tuna')||has('sardine'))steps.push(`Open and drain the ${has('tuna')?'tuna':'sardines'} unless the canning liquid is needed for the sauce.`);
+ const cold=/salad|cucumber-bowl|tomato-cucumber|papaya-bowl|soy-tofu-cucumber|tuna-papaya/.test(id);
+ if(has('chicken')||has('beef')){
+  const meat=has('chicken')?'chicken':'beef';
+  steps.push(`Heat ${has('oil')?'the oil':'a splash of water'} in a pan over medium-high heat. Add the ${meat} in one layer and cook, turning, until browned.`);
+  steps.push(has('chicken')?'Continue cooking until the thickest chicken piece reaches 74°C.':'Continue cooking until the beef is browned throughout, then remove it from the pan.');
+ }
+ if(has('tofu'))steps.push(`Heat ${has('oil')?'the oil':'a splash of water'} in a pan over medium heat. Cook the tofu for 6 to 8 minutes, turning until lightly golden.`);
+ if(has('egg'))steps.push(`Heat ${has('oil')?'the oil':'a splash of water'} in a pan over medium heat. Add the eggs and cook gently until set.`);
+ if(/soup|stew/.test(id))steps.push('Add the prepared vegetables and 350 ml water. Bring to a boil, lower the heat and simmer for 10 to 15 minutes until the vegetables are tender.');
+ else if(cold)steps.push(`Combine the ${[has('chicken')?'cooked chicken':has('beef')?'cooked beef':has('tofu')?'cooked tofu':has('tuna')?'tuna':has('sardine')?'sardines':'cooked ingredients',...produce].join(', ')} in a bowl. Add the soy sauce or vinegar listed in the ingredients and toss well.`);
+ else steps.push('Add the prepared vegetables to the pan and cook for 5 to 7 minutes, stirring, until tender but not mushy.');
+ if(has('rice'))steps.push('Spoon the cooked rice into a bowl and add the cooked mixture.');
+ steps.push(cold?'Taste, adjust the seasoning and serve.':'Taste, adjust the seasoning and serve hot.');
+ return steps;
 }
+
+function recipe([id,name,items],mealType){
+ const noCook=mealType==='breakfast'&&(/overnight|papaya-oat/.test(id));
+ return {id:`var-${id}`,name,mealType,servings:1,tag:mealType[0].toUpperCase()+mealType.slice(1),time:noCook?5:hasLongCook(items)?45:25,prep:noCook?5:8,cook:noCook?0:hasLongCook(items)?37:17,gear:noCook?['fridge']:['stove'],items,steps:recipeSteps(id,items,noCook),subs:'Choose another meal from the same section',storage};
+}
+
+function hasLongCook(items){return Object.hasOwn(items,'mung');}
 
 export const varietyRecipes=[...breakfast.map(item=>recipe(item,'breakfast')),...lunch.map(item=>recipe(item,'lunch')),...dinner.map(item=>recipe(item,'dinner'))];

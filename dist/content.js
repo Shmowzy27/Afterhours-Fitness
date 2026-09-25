@@ -1,9 +1,9 @@
-import {foodCatalog} from './food-catalog.js?v=20260924-21';
-import {extraRecipes} from './extra-recipes.js?v=20260924-21';
-import {varietyRecipes} from './variety-recipes.js?v=20260924-21';
-import {cuisineFoods} from './cuisine-foods.js?v=20260924-21';
-import {cuisineRecipes} from './cuisine-recipes.js?v=20260924-21';
-import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260924-21';
+import {foodCatalog} from './food-catalog.js?v=20260925-22';
+import {extraRecipes} from './extra-recipes.js?v=20260925-22';
+import {varietyRecipes} from './variety-recipes.js?v=20260925-22';
+import {cuisineFoods} from './cuisine-foods.js?v=20260925-22';
+import {cuisineRecipes} from './cuisine-recipes.js?v=20260925-22';
+import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260925-22';
 export const ingredients={
  rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:3.2,measure:'~½ cup per 90 g',allergens:[]},
  oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:2.4,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
@@ -45,6 +45,18 @@ recipes.forEach(r=>{r.servings=1;r.mealType=['silog','oats','overnight'].include
 recipes.push(...extraRecipes);
 recipes.push(...varietyRecipes);
 recipes.push(...cuisineRecipes);
+const methodParts=steps=>(steps||[]).flatMap(step=>String(step).split(/(?<=[.!?])\s+(?=[A-Z0-9])|;\s+|,\s+then\s+/i)).map(step=>step.trim().replace(/[.]$/,'')).filter(Boolean);
+const completeMethod=recipe=>{
+ const names=Object.keys(recipe.items||{}).map(id=>ingredients[id]?.name||id).join(' ').toLowerCase(),rawMeat=/chicken|beef|mince|pork|turkey/.test(names);
+ const steps=['Measure all ingredients before you start',rawMeat?'Wash and cut the produce. Use a separate board and utensils for raw meat':'Wash and cut the produce, then prepare the remaining ingredients as listed',recipe.cook>0?'Set out the cookware and serving containers before turning on the heat':'Use a clean container and clean serving utensils',...methodParts(recipe.steps).map(step=>step[0].toUpperCase()+step.slice(1))];
+ const text=steps.join(' ').toLowerCase();
+ if(/chicken|turkey/.test(names)&&!text.includes('74°'))steps.push('Check the thickest piece of poultry reaches 74°C before serving');
+ if(/\begg/.test(names)&&!/(set|firm)/.test(text))steps.push('Cook the eggs until the whites and yolks are set');
+ if(!/\bserve\b|\bportion\b/.test(text))steps.push(`Divide into ${recipe.servings||1} ${recipe.servings===1?'serving':'servings'} and serve`);
+ steps.push(`For leftovers: ${recipe.storage}`);
+ return [...new Set(steps.map(step=>step.replace(/[.]$/,'').trim()).filter(Boolean))].map(step=>step+'.');
+};
+for(const recipe of recipes)recipe.steps=completeMethod(recipe);
 const airFryerRecipes=new Set(['tofu','chicken','australian-chicken-veg']);
 for(const recipe of recipes){recipe.cuisine||=recipe.id==='adobo'||recipe.id==='tinola'||recipe.id==='monggo'||recipe.id==='silog'?'Filipino':'Everyday';if(airFryerRecipes.has(recipe.id))recipe.methods||=[{id:'stove',name:'Stove',gear:'stove',time:recipe.cook||20,temp:'medium',oilFactor:1},{id:'air-fryer',name:'Air fryer',gear:'air fryer',time:18,temp:'190°C',oilFactor:.35}];}
 export const baseIngredients=structuredClone(ingredients),baseRecipes=structuredClone(recipes);

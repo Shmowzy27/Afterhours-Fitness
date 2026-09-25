@@ -26,10 +26,29 @@ const drag=async(selector,from,to,duration=160)=>page.locator(selector).evaluate
 assert.equal(await page.evaluate(()=>getComputedStyle(document.body).fontFamily),'Archivo, sans-serif');
 assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth),375);
 assert.equal(await page.locator('.pager-page[data-page=today] img').count(),0);
+const assertPage=async name=>{
+  await page.waitForTimeout(300);
+  assert.equal(page.url().split('#')[1],name);
+  assert.equal(await page.locator('nav a.active').getAttribute('href'),`#${name}`);
+  assert.equal(await page.locator('.mobile-pager').evaluate(node=>node.style.getPropertyValue('--page-drag')),'');
+};
+const views=['today','training','meals','progress','settings'];
+for(let cycle=0;cycle<2;cycle++){
+  await drag(cycle?'.pager-page[data-page=today]':'.pager-page[data-page=today] .week button:first-child',[330,300],[80,305]);
+  await assertPage('training');
+  for(const name of views.slice(2)){
+    const selector=name==='progress'?'.pager-page[data-page=meals] .tabs button:first-child':`.pager-page[data-page=${views[views.indexOf(name)-1]}]`;
+    await drag(selector,[330,300],[80,305]);
+    await assertPage(name);
+  }
+  for(const name of [...views].reverse().slice(1)){
+    const current=views[views.indexOf(name)+1];
+    await drag(`.pager-page[data-page=${current}]`,[45,300],[300,305]);
+    await assertPage(name);
+  }
+}
 await drag('.pager-page[data-page=today]',[330,300],[80,305]);
-await page.waitForTimeout(300);
-assert.equal(page.url().split('#')[1],'training');
-assert.equal(await page.locator('nav a.active').getAttribute('href'),'#training');
+await assertPage('training');
 await drag('.pager-page[data-page=training]',[200,250],[205,500]);
 await page.waitForTimeout(100);
 assert.equal(page.url().split('#')[1],'training');
@@ -42,8 +61,11 @@ assert.ok(await page.locator('.pager-page[data-page=meals] .recipe-photo-card').
 assert.equal(await page.locator('.pager-page[data-page=meals] img').count(),0);
 await page.locator('.pager-page[data-page=meals] .recipe-photo-card').first().click();
 assert.equal(await page.locator('#modal .recipe-hero img').count(),0);
+assert.equal(await page.locator('#modal [data-action=copyrecipe]').count(),0);
 assert.equal(await page.locator('#modal>.close').evaluate(node=>getComputedStyle(node).opacity),'0');
 assert.equal(await page.locator('#modal>.close').getAttribute('aria-label'),'Close');
+await page.locator('#modal [data-action=recipe-tab][data-tab=method]').click();
+assert.ok(await page.locator('#modal .steps li').count()>=5);
 await page.goBack();await page.waitForTimeout(100);assert.equal(await page.locator('#modal').getAttribute('open'),null);
 await page.locator('nav a[href="#progress"]').click();await page.waitForTimeout(280);
 await page.locator('.pager-page[data-page=progress] [data-action=tdee]').click();

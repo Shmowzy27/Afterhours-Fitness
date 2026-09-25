@@ -10,6 +10,15 @@ test('built-in recipes use the compact photo-free layout',()=>{
   assert.equal(fs.existsSync(new URL('../dist/recipe-images.js',import.meta.url)),false);
 });
 
+test('built-in recipes include complete cooking methods',()=>{
+  for(const recipe of recipes){
+    assert.ok(recipe.steps.length>=5,`${recipe.id} has a complete method`);
+    assert.match(recipe.steps[0],/^Measure all ingredients/);
+    assert.match(recipe.steps.at(-1),/^For leftovers:/);
+    if(/thickest (piece of poultry|chicken piece)|Chicken must/.test(recipe.steps.join(' ')))assert.ok(Object.hasOwn(recipe.items,'chicken'),`${recipe.id} only uses the chicken temperature when chicken is present`);
+  }
+});
+
 test('round 10 shell uses chosen type, gestures and honest service worker',()=>{
   const css=fs.readFileSync(new URL('../dist/style.css',import.meta.url),'utf8');
   const app=fs.readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');
@@ -19,6 +28,8 @@ test('round 10 shell uses chosen type, gestures and honest service worker',()=>{
   assert.match(app,/touchstart/);
   assert.match(app,/touchmove/);
   assert.match(app,/passive:false/);
+  assert.match(app,/tracking=false/);
+  assert.doesNotMatch(app,/btn\('Share','copyrecipe'/);
   assert.match(app,/scrollTop<=0/);
   assert.match(app,/scrollHeight-1/);
   assert.match(app,/distance>=96/);
