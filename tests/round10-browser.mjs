@@ -56,6 +56,10 @@ await page.locator('nav a[href="#meals"]').click();await page.waitForTimeout(300
 assert.equal(page.url().split('#')[1],'meals');
 assert.equal(await page.locator('.pager-page[data-page=meals] img').count(),0);
 assert.ok(await page.locator('.pager-page[data-page=meals] button').count()<108);
+const suggestionLayout=await page.locator('.pager-page[data-page=meals] .meal-suggestions .recipe-photo-card').first().evaluate(node=>{const card=node.getBoundingClientRect(),title=node.querySelector('strong').getBoundingClientRect(),copy=getComputedStyle(node.querySelector('.recipe-photo-copy'));return {cardLeft:card.left,titleLeft:title.left,textAlign:copy.textAlign,justify:copy.justifyContent};});
+assert.ok(suggestionLayout.titleLeft-suggestionLayout.cardLeft<=24,JSON.stringify(suggestionLayout));
+assert.equal(suggestionLayout.textAlign,'left');
+assert.equal(await page.locator('.pager-page[data-page=meals] .tabs').evaluate(node=>getComputedStyle(node).display),'grid');
 const plannedCard=page.locator('.pager-page[data-page=meals] .meal-day[open] .menu-card').first();
 const plannedLayout=await plannedCard.evaluate(node=>{const recipe=node.querySelector('.recipe-photo-card').getBoundingClientRect(),actions=node.querySelector('.meal-card-actions').getBoundingClientRect();return {recipeWidth:recipe.width,left:recipe.left,actionsRight:actions.right,viewport:innerWidth};});
 assert.ok(plannedLayout.recipeWidth>=150,JSON.stringify(plannedLayout));

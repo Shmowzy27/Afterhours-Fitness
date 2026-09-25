@@ -1,6 +1,6 @@
-import {validateFoodExtension} from './food-store.js?v=20260925-23';
-import {ingredients,recipes,exercises,baseIngredients as catalogIngredients,baseRecipes as catalogRecipes} from './content.js?v=20260925-23';
-import {isLocalRecipe,supplementalIngredients} from './regional-food.js?v=20260925-23';
+import {validateFoodExtension} from './food-store.js?v=20260925-24';
+import {ingredients,recipes,exercises,baseIngredients as catalogIngredients,baseRecipes as catalogRecipes} from './content.js?v=20260925-24';
+import {isLocalRecipe,supplementalIngredients} from './regional-food.js?v=20260925-24';
 export const VERSION=1;
 export const cities=[
  ...['Manila','Davao','Cebu','Quezon City','Baguio','Iloilo','Bacolod','Cagayan de Oro','Zamboanga'].map(name=>({id:name.toLowerCase().replaceAll(' ','-'),name,country:'Philippines',zone:'Asia/Manila'})),
