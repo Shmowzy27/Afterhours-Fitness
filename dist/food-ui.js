@@ -1,9 +1,9 @@
-import {ingredients,recipes} from './content.js?v=20260925-28';
-import * as C from './core.js?v=20260925-28';
-import * as F from './food-store.js?v=20260925-28';
-import {parseRecipeText,recognizePhotos,preparePhoto} from './recipe-import.js?v=20260925-28';
-import {isLocalRecipe,substitutions} from './regional-food.js?v=20260925-28';
-import {active,id as recordId,stamp,tombstone} from './storage.js?v=20260925-28';
+import {ingredients,recipes} from './content.js?v=20260925-29';
+import * as C from './core.js?v=20260925-29';
+import * as F from './food-store.js?v=20260925-29';
+import {parseRecipeText,recognizePhotos,preparePhoto} from './recipe-import.js?v=20260925-29';
+import {isLocalRecipe,substitutions} from './regional-food.js?v=20260925-29';
+import {active,id as recordId,stamp,tombstone} from './storage.js?v=20260925-29';
 export function createFoodUI(api){const {esc,field,select,check,btn,modal,close,save,money,amount,baseAmount,today}=api,s=()=>api.state(),p=()=>s().profile||C.defaults;
 	let filters={type:'all',cuisine:'all',sort:'cost',cost:'',protein:'',time:'',vegetarian:false},ingredientSearch='',ingredientMatches=[],ingredientMatch=null,recipeSearch='',recipeChips=[],recipeDraft=null,entryDraft=null,importedDraft=null,visibleRecipes=12,showAllRegions=false,addTab='recent',targetMeal='breakfast',recipeImportText='',recipePhotoDerived=false,recipePhotoImage='',recipeCrop={x:.05,y:.05,w:.9,h:.9},pendingRecipePhoto=null,nutritionTab='calories',nutritionRange='day';
 const uid=()=> 'custom-'+crypto.randomUUID();

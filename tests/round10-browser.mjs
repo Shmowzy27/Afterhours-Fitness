@@ -90,12 +90,15 @@ await page.goBack();await page.waitForTimeout(100);assert.equal(await page.locat
 await page.locator('nav a[href="#progress"]').click();await page.waitForTimeout(280);
 await page.locator('.pager-page[data-page=progress] [data-action=tdee]').click();
 const sheet=page.locator('#modal');assert.ok(await sheet.isVisible());
+const controlledDrag=await page.locator('#modal .sheet-dismiss').evaluate(node=>{const dialog=node.closest('dialog'),touch=y=>new Touch({identifier:2,target:node,clientX:188,clientY:y,pageX:188,pageY:y,screenX:188,screenY:y});node.dispatchEvent(new TouchEvent('touchstart',{touches:[touch(420)],changedTouches:[touch(420)],bubbles:true}));node.dispatchEvent(new TouchEvent('touchmove',{touches:[touch(680)],changedTouches:[touch(680)],bubbles:true,cancelable:true}));const far=dialog.style.getPropertyValue('--sheet-drag');node.dispatchEvent(new TouchEvent('touchmove',{touches:[touch(500)],changedTouches:[touch(500)],bubbles:true,cancelable:true}));const returned=dialog.style.getPropertyValue('--sheet-drag');node.dispatchEvent(new TouchEvent('touchend',{touches:[],changedTouches:[touch(500)],bubbles:true}));return {far,returned};});
+assert.deepEqual(controlledDrag,{far:'260px',returned:'80px'});await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
 await drag('#modal .sheet-dismiss',[188,770],[188,830],220);await page.waitForTimeout(260);assert.ok(await sheet.isVisible());
 await drag('#modal .sheet-dismiss',[188,770],[188,650],180);await page.waitForTimeout(260);assert.ok(await sheet.isVisible());
-await drag('#modal .sheet-dismiss',[188,650],[188,790],180);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
+await drag('#modal .sheet-dismiss',[188,650],[188,790],180);await page.waitForTimeout(260);assert.ok(await sheet.isVisible());
+await drag('#modal .sheet-dismiss',[188,420],[188,780],240);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
 await page.locator('.pager-page[data-page=progress] [data-action=tdee]').click();
 await sheet.evaluate(node=>node.scrollTop=node.scrollHeight);
-await drag('#modal .sheet-dismiss',[188,650],[188,790],180);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
+await drag('#modal .sheet-dismiss',[188,420],[188,780],240);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
 await page.locator('nav a[href="#today"]').click();await page.waitForTimeout(280);
 for(let index=0,count=await page.locator('.pager-page[data-page=today] .week button').count();index<count&&!await page.locator('.pager-page[data-page=today] [data-action=start]').count();index++)await page.locator('.pager-page[data-page=today] .week button').nth(index).click();
 await page.locator('.pager-page[data-page=today] [data-action=start]').click();await page.locator('[data-action=ready]').click();
