@@ -1,9 +1,9 @@
-import {foodCatalog} from './food-catalog.js?v=20260925-31';
-import {extraRecipes} from './extra-recipes.js?v=20260925-31';
-import {varietyRecipes} from './variety-recipes.js?v=20260925-31';
-import {cuisineFoods} from './cuisine-foods.js?v=20260925-31';
-import {cuisineRecipes} from './cuisine-recipes.js?v=20260925-31';
-import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260925-31';
+import {foodCatalog} from './food-catalog.js?v=20260925-32';
+import {extraRecipes} from './extra-recipes.js?v=20260925-32';
+import {varietyRecipes} from './variety-recipes.js?v=20260925-32';
+import {cuisineFoods} from './cuisine-foods.js?v=20260925-32';
+import {cuisineRecipes} from './cuisine-recipes.js?v=20260925-32';
+import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260925-32';
 export const ingredients={
  rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:3.2,measure:'~½ cup per 90 g',allergens:[]},
  oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:2.4,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
