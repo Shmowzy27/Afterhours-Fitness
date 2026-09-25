@@ -34,10 +34,10 @@ const assertPage=async name=>{
 };
 const views=['today','training','meals','progress','settings'];
 for(let cycle=0;cycle<2;cycle++){
-  await drag(cycle?'.pager-page[data-page=today]':'.pager-page[data-page=today] .week button:first-child',[330,300],[80,305]);
+  await drag('.pager-page[data-page=today]',[330,300],[80,305]);
   await assertPage('training');
   for(const name of views.slice(2)){
-    const selector=name==='progress'?'.pager-page[data-page=meals] .tabs button:first-child':`.pager-page[data-page=${views[views.indexOf(name)-1]}]`;
+    const selector=`.pager-page[data-page=${views[views.indexOf(name)-1]}]`;
     await drag(selector,[330,300],[80,305]);
     await assertPage(name);
   }
@@ -61,6 +61,10 @@ const suggestionLayout=await page.locator('.pager-page[data-page=meals] .meal-su
 assert.ok(suggestionLayout.titleLeft-suggestionLayout.cardLeft<=24,JSON.stringify(suggestionLayout));
 assert.equal(suggestionLayout.textAlign,'left');
 assert.equal(await page.locator('.pager-page[data-page=meals] .tabs').evaluate(node=>getComputedStyle(node).display),'grid');
+await page.locator('.pager-page[data-page=meals] [data-action=meal-tab][data-tab=grocery]').tap();
+assert.equal(await page.locator('.pager-page[data-page=meals] [data-action=meal-tab][data-tab=grocery]').getAttribute('aria-pressed'),'true');
+await page.locator('.pager-page[data-page=meals] [data-action=meal-tab][data-tab=plan]').tap();
+assert.equal(await page.locator('.pager-page[data-page=meals] [data-action=meal-tab][data-tab=plan]').getAttribute('aria-pressed'),'true');
 const plannedCard=page.locator('.pager-page[data-page=meals] .meal-day[open] .menu-card').first();
 const plannedLayout=await plannedCard.evaluate(node=>{const recipe=node.querySelector('.recipe-photo-card').getBoundingClientRect(),actions=node.querySelector('.meal-card-actions').getBoundingClientRect();return {recipeWidth:recipe.width,left:recipe.left,actionsRight:actions.right,viewport:innerWidth};});
 assert.ok(plannedLayout.recipeWidth>=150,JSON.stringify(plannedLayout));
