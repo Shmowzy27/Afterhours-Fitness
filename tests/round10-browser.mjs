@@ -56,6 +56,10 @@ await page.locator('nav a[href="#meals"]').click();await page.waitForTimeout(300
 assert.equal(page.url().split('#')[1],'meals');
 assert.equal(await page.locator('.pager-page[data-page=meals] img').count(),0);
 assert.ok(await page.locator('.pager-page[data-page=meals] button').count()<108);
+const plannedCard=page.locator('.pager-page[data-page=meals] .meal-day[open] .menu-card').first();
+const plannedLayout=await plannedCard.evaluate(node=>{const recipe=node.querySelector('.recipe-photo-card').getBoundingClientRect(),actions=node.querySelector('.meal-card-actions').getBoundingClientRect();return {recipeWidth:recipe.width,left:recipe.left,actionsRight:actions.right,viewport:innerWidth};});
+assert.ok(plannedLayout.recipeWidth>=150,JSON.stringify(plannedLayout));
+assert.ok(plannedLayout.left>=0&&plannedLayout.actionsRight<=plannedLayout.viewport,JSON.stringify(plannedLayout));
 await page.locator('.pager-page[data-page=meals] [data-action=meal-tab][data-tab=recipes]').click();
 assert.ok(await page.locator('.pager-page[data-page=meals] .recipe-photo-card').count()>0);
 assert.equal(await page.locator('.pager-page[data-page=meals] img').count(),0);
