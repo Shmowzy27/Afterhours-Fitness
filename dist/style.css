@@ -1,5 +1,5 @@
 /* Hover styling is not used in this app */
-@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/archivo-variable.ttf?v=20260924-20') format('truetype')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/archivo-variable.ttf?v=20260924-21') format('truetype')}
 
 :root{--bg:#F4F1EA;--surface:#FBF9F4;--surface-2:#EEEAE0;--line:#DDD8CC;--text:#1C1D1A;--text-2:#55534D;--accent:#C4501F;--accent-text:#9A3E17;--on-accent:#FBF9F4;--toast-bg:#1C1D1A;--toast-text:#F4F1EA;--toast-action:#F29668;--shadow:#1C1D1A33;--overlay:#1C1D1A80;--paper:var(--bg);--ink:var(--text);--muted:var(--text-2);--white:var(--surface);--deep:var(--surface);--green:var(--accent-text);--red:var(--accent-text);color-scheme:light}
 html[data-theme="dark"]{--bg:#141512;--surface:#1E1F1B;--surface-2:#282924;--line:#393A34;--text:#E8E4DA;--text-2:#A9A59B;--accent:#F07A45;--accent-text:#F29668;--on-accent:#141512;--toast-bg:#282924;--toast-text:#E8E4DA;--toast-action:#F29668;--shadow:#14151266;--overlay:#141512AA;color-scheme:dark}
@@ -470,3 +470,34 @@ dialog.sheet-dragging{transition:none}
 .site-header nav a{border-radius:0}.tag{border-radius:var(--radius-field)}.recipe-photo-card{border-radius:var(--radius-card)!important}.close,.circle,.icon-button{border-radius:var(--radius-control)}
 .outline,.secondary-action,.danger-button{background:transparent}
 input,select,textarea{background:var(--surface-2);border:0}
+
+
+/* Compact photo-free meal layout and unobstructed phone controls */
+.recipe-picture,.recipe-hero,.photo-credit,.meal-photo-thumb{display:none!important}
+.recipe-photo-card{position:relative!important;display:flex!important;align-items:center;justify-content:space-between;gap:var(--space-16);aspect-ratio:auto!important;min-height:72px!important;padding:var(--space-16)!important;border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;color:var(--text)!important;text-align:left}
+.recipe-photo-card>svg{width:18px;height:18px;color:var(--text-2)}
+.recipe-photo-card .recipe-photo-copy{position:static!important;inset:auto!important;display:grid!important;gap:var(--space-4)!important;padding:0!important;background:transparent!important;color:var(--text)!important;text-shadow:none!important}
+.recipe-photo-card .recipe-photo-copy strong{color:var(--text)!important;text-shadow:none!important}
+.recipe-photo-card .recipe-photo-copy small{color:var(--text-2)!important;text-shadow:none!important}
+.recipe-grid{gap:0;border-top:1px solid var(--line)}
+.menu-card{display:block;border-bottom:1px solid var(--line);padding:0 0 var(--space-12)}
+.menu-card>.recipe-photo-card{border-bottom:0!important}
+.menu-card .meal-card-actions{padding:0 var(--space-16)}
+
+.place-toggle{min-width:0;padding:0;gap:0;background:transparent!important;border-bottom:1px solid var(--line);border-radius:0}
+.place-toggle button,.setup-place span{background:transparent!important;border:0;border-bottom:2px solid transparent;border-radius:0;color:var(--text-2)}
+.place-toggle button.selected,.setup-place input:checked+span{background:transparent!important;border-color:var(--accent);color:var(--text)}
+
+@media(max-width:560px){
+ .pager-main,.mobile-pager,.pager-page{min-height:0;touch-action:pan-y}
+ .pager-page{overflow-y:scroll!important;padding-bottom:env(safe-area-inset-bottom)}
+ .pager-page>.page{padding-bottom:var(--space-48)}
+ .site-header nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;padding-left:0;padding-right:0;background:var(--surface);box-shadow:0 -1px 0 var(--line)}
+ .site-header nav a{background:transparent!important;border:0;border-radius:0;min-width:0}
+ .site-header nav a.active{background:transparent!important;color:var(--text)}
+ dialog.dialog-setup{overflow-y:scroll!important;touch-action:pan-y;padding-bottom:calc(var(--space-24) + env(safe-area-inset-bottom));scroll-padding-bottom:var(--space-24)}
+ dialog.dialog-setup .form-foot{position:static!important;inset:auto!important;margin:var(--space-32) 0 0;padding:var(--space-16) 0 0;border-top:1px solid var(--line);background:transparent;z-index:auto}
+ #setup-form{padding-bottom:var(--space-24)}
+ #toast{left:var(--space-16);right:var(--space-16);bottom:calc(72px + env(safe-area-inset-bottom) + var(--space-8));width:auto;max-width:none;transform:none;padding:var(--space-8) var(--space-12)}
+ .recipe-grid{grid-template-columns:1fr}
+}

@@ -1,18 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import path from 'node:path';
 
 globalThis.location={hostname:'localhost'};
 const {recipes}=await import('../dist/content.js');
-const root=new URL('../dist/',import.meta.url);
-
-test('every built-in recipe has credited local card and hero photos',()=>{
+test('built-in recipes use the compact photo-free layout',()=>{
   assert.equal(recipes.length,111);
-  for(const recipe of recipes){
-    for(const key of ['image','imageFallback','imageCard','imageCardFallback','imageCredit','imageLicence','imageSource'])assert.ok(recipe[key],`${recipe.id} ${key}`);
-    for(const key of ['image','imageFallback','imageCard','imageCardFallback'])assert.ok(fs.existsSync(path.join(root.pathname,recipe[key])),`${recipe.id} ${key}`);
-  }
+  for(const recipe of recipes)for(const key of ['image','imageFallback','imageCard','imageCardFallback'])assert.equal(recipe[key],undefined,`${recipe.id} ${key}`);
+  assert.equal(fs.existsSync(new URL('../dist/recipe-images.js',import.meta.url)),false);
 });
 
 test('round 10 shell uses chosen type, gestures and honest service worker',()=>{
