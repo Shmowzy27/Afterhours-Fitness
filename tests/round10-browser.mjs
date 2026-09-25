@@ -7,6 +7,10 @@ const errors=[];page.on('pageerror',error=>errors.push(error.message));
 await page.goto('http://localhost:4173',{waitUntil:'domcontentloaded'});
 await page.evaluate(()=>{localStorage.clear();sessionStorage.clear()});
 await page.reload({waitUntil:'domcontentloaded'});
+assert.equal(await page.locator('.mobile-pager').count(),1);
+const setupScroll=await page.locator('.pager-page[data-page=today]').evaluate(node=>{node.scrollTop=node.scrollHeight;return {top:node.scrollTop,height:node.scrollHeight,client:node.clientHeight}});
+assert.ok(setupScroll.height>setupScroll.client&&setupScroll.top>0,JSON.stringify(setupScroll));
+await page.locator('.pager-page[data-page=today]').evaluate(node=>node.scrollTop=0);
 await page.getByRole('button',{name:/Set up my plan/}).click();
 for(let index=0;index<4;index++){
   const scroll=await page.locator('#modal').evaluate(node=>{node.scrollTop=node.scrollHeight;return {top:node.scrollTop,height:node.scrollHeight,client:node.clientHeight}});
@@ -69,6 +73,9 @@ const plannedCard=page.locator('.pager-page[data-page=meals] .meal-day[open] .me
 const plannedLayout=await plannedCard.evaluate(node=>{const recipe=node.querySelector('.recipe-photo-card').getBoundingClientRect(),actions=node.querySelector('.meal-card-actions').getBoundingClientRect();return {recipeWidth:recipe.width,left:recipe.left,actionsRight:actions.right,viewport:innerWidth};});
 assert.ok(plannedLayout.recipeWidth>=150,JSON.stringify(plannedLayout));
 assert.ok(plannedLayout.left>=0&&plannedLayout.actionsRight<=plannedLayout.viewport,JSON.stringify(plannedLayout));
+const mealSummary=page.locator('.pager-page[data-page=meals] .meal-day').first().locator('summary');
+assert.equal(await mealSummary.locator('svg').count(),1);
+assert.equal(await mealSummary.evaluate(node=>getComputedStyle(node,'::after').content),'none');
 await page.locator('.pager-page[data-page=meals] [data-action=meal-tab][data-tab=recipes]').click();
 assert.ok(await page.locator('.pager-page[data-page=meals] .recipe-photo-card').count()>0);
 assert.equal(await page.locator('.pager-page[data-page=meals] img').count(),0);
@@ -83,11 +90,12 @@ await page.goBack();await page.waitForTimeout(100);assert.equal(await page.locat
 await page.locator('nav a[href="#progress"]').click();await page.waitForTimeout(280);
 await page.locator('.pager-page[data-page=progress] [data-action=tdee]').click();
 const sheet=page.locator('#modal');assert.ok(await sheet.isVisible());
-await drag('#modal .sheet-handle',[188,25],[188,70],220);await page.waitForTimeout(260);assert.ok(await sheet.isVisible());
-await drag('#modal .sheet-handle',[188,25],[188,145],180);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
+await drag('#modal .sheet-dismiss',[188,770],[188,830],220);await page.waitForTimeout(260);assert.ok(await sheet.isVisible());
+await drag('#modal .sheet-dismiss',[188,770],[188,650],180);await page.waitForTimeout(260);assert.ok(await sheet.isVisible());
+await drag('#modal .sheet-dismiss',[188,650],[188,790],180);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
 await page.locator('.pager-page[data-page=progress] [data-action=tdee]').click();
 await sheet.evaluate(node=>node.scrollTop=node.scrollHeight);
-await drag('#modal .sheet-handle',[188,25],[188,-95],180);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
+await drag('#modal .sheet-dismiss',[188,650],[188,790],180);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
 await page.locator('nav a[href="#today"]').click();await page.waitForTimeout(280);
 for(let index=0,count=await page.locator('.pager-page[data-page=today] .week button').count();index<count&&!await page.locator('.pager-page[data-page=today] [data-action=start]').count();index++)await page.locator('.pager-page[data-page=today] .week button').nth(index).click();
 await page.locator('.pager-page[data-page=today] [data-action=start]').click();await page.locator('[data-action=ready]').click();
