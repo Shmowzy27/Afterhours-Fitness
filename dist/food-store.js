@@ -1,4 +1,4 @@
-import {id as makeId,stamp,tombstone,active} from './storage.js?v=20260925-26';
+import {id as makeId,stamp,tombstone,active} from './storage.js?v=20260925-27';
 
 export const nutrientKeys=['kcal','kj','protein','carbs','sugars','fat','saturatedFat','fibre','sodium','potassium','calcium','iron','magnesium','zinc','vitaminC','vitaminA','folate','cost'];
 export const nutrientMeta={kcal:['Calories','kcal'],kj:['Energy','kJ'],protein:['Protein','g'],carbs:['Carbs','g'],sugars:['Sugars','g'],fat:['Fat','g'],saturatedFat:['Saturated fat','g'],fibre:['Fibre','g'],sodium:['Sodium','mg'],potassium:['Potassium','mg'],calcium:['Calcium','mg'],iron:['Iron','mg'],magnesium:['Magnesium','mg'],zinc:['Zinc','mg'],vitaminC:['Vitamin C','mg'],vitaminA:['Vitamin A','µg'],folate:['Folate','µg'],cost:['Cost','']};
