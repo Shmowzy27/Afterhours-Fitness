@@ -30,8 +30,10 @@ test('round 10 shell uses chosen type, gestures and honest service worker',()=>{
   assert.match(app,/passive:false/);
   assert.match(app,/tracking=false/);
   assert.doesNotMatch(app,/btn\('Share','copyrecipe'/);
-  assert.match(app,/\.sheet-dismiss/);
-  assert.match(app,/threshold=Math.max\(180,Math.min\(320,el.clientHeight\*\.4\)\)/);
+  assert.doesNotMatch(app,/sheet-dismiss/);
+  assert.match(app,/atBottom=el.scrollTop\+el.clientHeight>=el.scrollHeight-2/);
+  assert.match(app,/fromBottom=touch.clientY>=rect.bottom-140/);
+  assert.match(app,/distance>=96/);
   assert.doesNotMatch(app,/fast=distance/);
   assert.doesNotMatch(app,/direction>0\?'110vh':'-110vh'/);
   assert.match(sw,/skipWaiting/);
