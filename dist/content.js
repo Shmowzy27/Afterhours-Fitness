@@ -1,9 +1,10 @@
-import {foodCatalog} from './food-catalog.js?v=20260923-19';
-import {extraRecipes} from './extra-recipes.js?v=20260923-19';
-import {varietyRecipes} from './variety-recipes.js?v=20260923-19';
-import {cuisineFoods} from './cuisine-foods.js?v=20260923-19';
-import {cuisineRecipes} from './cuisine-recipes.js?v=20260923-19';
-import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260923-19';
+import {foodCatalog} from './food-catalog.js?v=20260924-20';
+import {extraRecipes} from './extra-recipes.js?v=20260924-20';
+import {varietyRecipes} from './variety-recipes.js?v=20260924-20';
+import {cuisineFoods} from './cuisine-foods.js?v=20260924-20';
+import {cuisineRecipes} from './cuisine-recipes.js?v=20260924-20';
+import {recipeImages} from './recipe-images.js?v=20260924-20';
+import {applyRegionalCatalog,countryForCity} from './regional-food.js?v=20260924-20';
 export const ingredients={
  rice:{name:'Rice',kcal:365.0,protein:7.13,pack:1000,price:3.2,measure:'~½ cup per 90 g',allergens:[]},
  oats:{name:'Rolled oats',kcal:379.0,protein:13.15,pack:500,price:2.4,measure:'~½ cup per 40 g',allergens:['gluten'],cross:'May contain wheat'},
@@ -45,6 +46,19 @@ recipes.forEach(r=>{r.servings=1;r.mealType=['silog','oats','overnight'].include
 recipes.push(...extraRecipes);
 recipes.push(...varietyRecipes);
 recipes.push(...cuisineRecipes);
+const recipeImageKey=recipe=>{
+ const ids=new Set(Object.keys(recipe.items));
+ if(ids.has('sardine'))return 'sardine';
+ if(ids.has('tuna'))return 'tuna';
+ if(ids.has('beef'))return 'beef';
+ if(ids.has('tofu'))return 'tofu';
+ if(ids.has('chickpea-cooked')||ids.has('mung'))return /soup|stew/i.test(recipe.name)?'soup':'chickpea';
+ if(ids.has('pasta-cooked'))return 'pasta';
+ if(recipe.mealType==='breakfast'||ids.has('oats')||ids.has('banana')||ids.has('bread'))return 'breakfast';
+ if(/salad|cucumber|papaya/i.test(recipe.name))return 'salad';
+ return 'chicken';
+};
+for(const recipe of recipes)Object.assign(recipe,recipeImages[recipeImageKey(recipe)]);
 const airFryerRecipes=new Set(['tofu','chicken','australian-chicken-veg']);
 for(const recipe of recipes){recipe.cuisine||=recipe.id==='adobo'||recipe.id==='tinola'||recipe.id==='monggo'||recipe.id==='silog'?'Filipino':'Everyday';if(airFryerRecipes.has(recipe.id))recipe.methods||=[{id:'stove',name:'Stove',gear:'stove',time:recipe.cook||20,temp:'medium',oilFactor:1},{id:'air-fryer',name:'Air fryer',gear:'air fryer',time:18,temp:'190°C',oilFactor:.35}];}
 export const baseIngredients=structuredClone(ingredients),baseRecipes=structuredClone(recipes);
