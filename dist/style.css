@@ -1,5 +1,5 @@
 /* Hover styling is not used in this app */
-@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/archivo-variable.ttf?v=20260925-24') format('truetype')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/archivo-variable.ttf?v=20260925-25') format('truetype')}
 
 :root{--bg:#F4F1EA;--surface:#FBF9F4;--surface-2:#EEEAE0;--line:#DDD8CC;--text:#1C1D1A;--text-2:#55534D;--accent:#C4501F;--accent-text:#9A3E17;--on-accent:#FBF9F4;--toast-bg:#1C1D1A;--toast-text:#F4F1EA;--toast-action:#F29668;--shadow:#1C1D1A33;--overlay:#1C1D1A80;--paper:var(--bg);--ink:var(--text);--muted:var(--text-2);--white:var(--surface);--deep:var(--surface);--green:var(--accent-text);--red:var(--accent-text);color-scheme:light}
 html[data-theme="dark"]{--bg:#141512;--surface:#1E1F1B;--surface-2:#282924;--line:#393A34;--text:#E8E4DA;--text-2:#A9A59B;--accent:#F07A45;--accent-text:#F29668;--on-accent:#141512;--toast-bg:#282924;--toast-text:#E8E4DA;--toast-action:#F29668;--shadow:#14151266;--overlay:#141512AA;color-scheme:dark}
@@ -535,11 +535,10 @@ input,select,textarea{background:var(--surface-2);border:0}
 .nutrition-review>div{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;min-height:52px;gap:var(--space-12);font-size:15px}
 .nutrition-review span,.nutrition-review strong{min-width:0}
 .nutrition-review small{display:block;font-size:12px;line-height:1.35}
-.pager-page[data-page=meals] .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;overflow:visible;border:1px solid var(--line);border-radius:var(--radius-control);margin:var(--space-24) 0}
-.pager-page[data-page=meals] .tabs button{width:100%;min-width:0;border:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-radius:0;background:transparent}
-.pager-page[data-page=meals] .tabs button:nth-child(3n){border-right:0}
-.pager-page[data-page=meals] .tabs button:nth-child(n+4){border-bottom:0}
-.pager-page[data-page=meals] .tabs button.selected{background:var(--surface-2);color:var(--accent)}
+.pager-page[data-page=meals] .tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-8);overflow:visible;border:0;border-radius:0;margin:var(--space-24) 0}
+.pager-page[data-page=meals] .tabs button{width:100%;min-width:0;border:1px solid var(--line);border-radius:var(--radius-control);background:transparent}
+.pager-page[data-page=meals] .tabs button:nth-child(3n),.pager-page[data-page=meals] .tabs button:nth-child(n+4){border:1px solid var(--line)}
+.pager-page[data-page=meals] .tabs button.selected{background:transparent;border-color:var(--accent);color:var(--accent)}
 
 @media(max-width:560px){
  .meal-row,.today-meals>.meal-row,.today-secondary .today-meals>.meal-row{grid-template-columns:58px minmax(0,1fr) 44px;gap:var(--space-8)}
