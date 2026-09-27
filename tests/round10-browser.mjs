@@ -18,6 +18,8 @@ const dayBoxes=await page.locator('#setup-form .daychecks .check').evaluateAll(n
 assert.ok(dayBoxes.every(height=>height===64),JSON.stringify(dayBoxes));
 const timeWidths=await page.locator('#setup-form .schedule-grid input[type=time]').evaluateAll(nodes=>nodes.map(node=>node.getBoundingClientRect().width));
 assert.ok(timeWidths.length>=4&&Math.max(...timeWidths)-Math.min(...timeWidths)<1,JSON.stringify(timeWidths));
+const timeAlignment=await page.locator('#setup-form .schedule-grid input[type=time]').evaluateAll(nodes=>nodes.map(node=>({height:node.getBoundingClientRect().height,lineHeight:getComputedStyle(node).lineHeight,paddingTop:getComputedStyle(node).paddingTop,paddingBottom:getComputedStyle(node).paddingBottom})));
+assert.ok(timeAlignment.every(({height,lineHeight,paddingTop,paddingBottom})=>height===48&&lineHeight==='48px'&&paddingTop==='0px'&&paddingBottom==='0px'),JSON.stringify(timeAlignment));
 const timeEdges=await page.locator('#setup-form .schedule-grid input[type=time]').evaluateAll(nodes=>nodes.map(node=>{const box=node.getBoundingClientRect();return {left:box.left,right:box.right,width:box.width,viewport:innerWidth};}));
 assert.ok(timeEdges.every(box=>box.left>=0&&box.right<=box.viewport&&box.width<=box.viewport-32),JSON.stringify(timeEdges));
 await page.getByRole('button',{name:'Continue'}).click();

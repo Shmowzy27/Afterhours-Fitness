@@ -1,5 +1,5 @@
 /* Hover styling is not used in this app */
-@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/archivo-variable.ttf?v=20260927-36') format('truetype')}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:100 900;font-display:swap;src:url('/fonts/archivo-variable.ttf?v=20260927-37') format('truetype')}
 
 :root{--bg:#F4F1EA;--surface:#FBF9F4;--surface-2:#EEEAE0;--line:#DDD8CC;--text:#1C1D1A;--text-2:#55534D;--accent:#C4501F;--accent-text:#9A3E17;--on-accent:#FBF9F4;--toast-bg:#1C1D1A;--toast-text:#F4F1EA;--toast-action:#F29668;--shadow:#1C1D1A33;--overlay:#1C1D1A80;--paper:var(--bg);--ink:var(--text);--muted:var(--text-2);--white:var(--surface);--deep:var(--surface);--green:var(--accent-text);--red:var(--accent-text);color-scheme:light}
 html[data-theme="dark"]{--bg:#141512;--surface:#1E1F1B;--surface-2:#282924;--line:#393A34;--text:#E8E4DA;--text-2:#A9A59B;--accent:#F07A45;--accent-text:#F29668;--on-accent:#141512;--toast-bg:#282924;--toast-text:#E8E4DA;--toast-action:#F29668;--shadow:#14151266;--overlay:#141512AA;color-scheme:dark}
@@ -674,3 +674,7 @@ dialog.sheet-settling{transition:transform .28s cubic-bezier(.22,.75,.2,1)}
  #setup-form,#setup-form .schedule-grid,#setup-form .schedule-grid>label,#setup-form .time-control{width:100%;min-width:0;max-width:100%}
  #setup-form .time-control{margin-top:0}
 }
+
+/* Center Safari's internal time value within the fixed-height field */
+.time-control input[type=time]{line-height:48px!important;padding-top:0!important;padding-bottom:0!important}
+.time-control input[type=time]::-webkit-date-and-time-value{display:flex;align-items:center;height:100%;min-height:100%;line-height:48px;text-align:left;padding:0;margin:0}
