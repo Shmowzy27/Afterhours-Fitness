@@ -34,7 +34,12 @@ test('round 10 shell uses chosen type, gestures and honest service worker',()=>{
   assert.match(app,/sheet-pull-zone/);
   assert.match(app,/atBottom=el.scrollTop\+el.clientHeight>=el.scrollHeight-24/);
   assert.match(app,/event\.target\.closest\('\.sheet-pull-zone'\)/);
-  assert.match(app,/distance>=72/);
+  assert.match(app,/distance>=56/);
+  assert.match(app,/Available dumbbell weights/);
+  assert.match(app,/Foods you don't eat/);
+  assert.match(app,/avoidFoods/);
+  assert.match(css,/\.multi-picker/);
+  assert.match(css,/\.schedule-grid/);
   assert.doesNotMatch(app,/fast=distance/);
   assert.doesNotMatch(app,/direction>0\?'110vh':'-110vh'/);
   assert.match(sw,/skipWaiting/);

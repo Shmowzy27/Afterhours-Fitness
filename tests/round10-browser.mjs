@@ -12,15 +12,28 @@ const setupScroll=await page.locator('.pager-page[data-page=today]').evaluate(no
 assert.ok(setupScroll.height>setupScroll.client&&setupScroll.top>0,JSON.stringify(setupScroll));
 await page.locator('.pager-page[data-page=today]').evaluate(node=>node.scrollTop=0);
 await page.getByRole('button',{name:/Set up my plan/}).click();
-for(let index=0;index<4;index++){
-  const scroll=await page.locator('#modal').evaluate(node=>{node.scrollTop=node.scrollHeight;return {top:node.scrollTop,height:node.scrollHeight,client:node.clientHeight}});
-  if(scroll.height>scroll.client)assert.ok(scroll.top>0);
-  await page.getByRole('button',{name:'Continue'}).click();
-}
+await page.getByRole('button',{name:'Continue'}).click();
+assert.equal(await page.locator('#setup-form .daychecks').count(),2);
+const dayBoxes=await page.locator('#setup-form .daychecks .check').evaluateAll(nodes=>nodes.map(node=>node.getBoundingClientRect().height));
+assert.ok(dayBoxes.every(height=>height===64),JSON.stringify(dayBoxes));
+const timeWidths=await page.locator('#setup-form .schedule-grid input[type=time]').evaluateAll(nodes=>nodes.map(node=>node.getBoundingClientRect().width));
+assert.ok(timeWidths.length>=4&&Math.max(...timeWidths)-Math.min(...timeWidths)<1,JSON.stringify(timeWidths));
+await page.getByRole('button',{name:'Continue'}).click();
+assert.equal(await page.locator('#setup-form input[name=weights][type=checkbox]').count(),26);
+await page.locator('#setup-form input[name=dumbbell]').check();
+await page.locator('#setup-form .weight-picker summary').click();
+await page.locator('#setup-form input[name=weights][value="5"]').check();
+await page.locator('#setup-form input[name=weights][value="10"]').check();
+await page.getByRole('button',{name:'Continue'}).click();
+assert.ok(await page.locator('#setup-form .food-picker input[type=checkbox]').count()>30);
+await page.locator('#setup-form .food-picker summary').click();
+await page.locator('#setup-form input[name=allergies][value="milk"]').check();
+await page.locator('#setup-form input[name=avoidFoods][value="beef"]').check();
+await page.getByRole('button',{name:'Continue'}).click();
 await page.getByRole('button',{name:'Review my plan'}).click();
 await page.getByRole('button',{name:'Save plan'}).click();
 await page.waitForTimeout(150);
-const drag=async(selector,from,to,duration=160)=>page.locator(selector).evaluate((node,{from,to,duration})=>{
+const drag=async(selector,from,to,duration=160)=>page.locator(selector).first().evaluate((node,{from,to,duration})=>{
   const touch=(x,y)=>({identifier:1,target:node,clientX:x,clientY:y,pageX:x,pageY:y,screenX:x,screenY:y});
   const fire=(type,touches,changedTouches,cancelable=false)=>{const event=new Event(type,{bubbles:true,cancelable});Object.defineProperties(event,{touches:{value:touches},changedTouches:{value:changedTouches}});node.dispatchEvent(event);};
   fire('touchstart',[touch(...from)],[touch(...from)]);
@@ -42,13 +55,14 @@ for(let cycle=0;cycle<2;cycle++){
   await drag('.pager-page[data-page=today]',[330,300],[80,305]);
   await assertPage('training');
   for(const name of views.slice(2)){
-    const selector=`.pager-page[data-page=${views[views.indexOf(name)-1]}]`;
+    const current=views[views.indexOf(name)-1],selector=current==='training'?'.pager-page[data-page=training] [data-action=demo]':`.pager-page[data-page=${current}]`;
     await drag(selector,[330,300],[80,305]);
     await assertPage(name);
   }
   for(const name of [...views].reverse().slice(1)){
     const current=views[views.indexOf(name)+1];
-    await drag(`.pager-page[data-page=${current}]`,[45,300],[300,305]);
+    const selector=current==='training'?'.pager-page[data-page=training] [data-action=demo]':`.pager-page[data-page=${current}]`;
+    await drag(selector,[45,300],[300,305]);
     await assertPage(name);
   }
 }
@@ -94,21 +108,21 @@ const sheet=page.locator('#modal');assert.ok(await sheet.isVisible());
 await sheet.evaluate(node=>node.scrollTop=node.scrollHeight);
 const pull=page.locator('#modal .sheet-pull-zone');assert.ok(await pull.isVisible());
 assert.equal(await pull.evaluate(node=>getComputedStyle(node).position),'static');
-const pullBox=await pull.boundingBox();assert.ok(pullBox.y<=660,JSON.stringify(pullBox));
-const pullStart={x:pullBox.x+pullBox.width/2,y:pullBox.y+28};
-await page.mouse.move(pullStart.x,pullStart.y);await page.mouse.down();await page.mouse.move(pullStart.x,pullStart.y+90,{steps:4});
+const pullBox=await pull.boundingBox();assert.ok(pullBox.height<=96&&pullBox.y<=720,JSON.stringify(pullBox));
+const pullStart={x:pullBox.x+pullBox.width/2,y:pullBox.y+18};
+await page.mouse.move(pullStart.x,pullStart.y);await page.mouse.down();await page.mouse.move(pullStart.x,pullStart.y+60,{steps:4});
 const far=await sheet.evaluate(node=>node.style.getPropertyValue('--sheet-drag'));
-await page.mouse.move(pullStart.x,pullStart.y+45,{steps:3});
+await page.mouse.move(pullStart.x,pullStart.y+30,{steps:3});
 const returned=await sheet.evaluate(node=>node.style.getPropertyValue('--sheet-drag'));await page.mouse.up();
-assert.deepEqual({far,returned},{far:'90px',returned:'45px'});await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
-const pointerDrag=async(selector,dy)=>{const box=await page.locator(selector).boundingBox(),x=box.x+box.width/2,y=box.y+28;await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x,y+dy,{steps:5});await page.mouse.up();};
-await pointerDrag('#modal .sheet-pull-zone',45);await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
+assert.deepEqual({far,returned},{far:'60px',returned:'30px'});await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
+const pointerDrag=async(selector,dy)=>{const box=await page.locator(selector).boundingBox(),x=box.x+box.width/2,y=box.y+18;await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x,y+dy,{steps:5});await page.mouse.up();};
+await pointerDrag('#modal .sheet-pull-zone',35);await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
 await pointerDrag('#modal .sheet-pull-zone',-60);await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
-await pointerDrag('#modal',100);await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
-await pointerDrag('#modal .sheet-pull-zone',90);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
+await pointerDrag('#modal #tdee-result',100);await page.waitForTimeout(300);assert.ok(await sheet.isVisible());
+await pointerDrag('#modal .sheet-pull-zone',60);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
 await page.locator('.pager-page[data-page=progress] [data-action=tdee]').click();
 await sheet.evaluate(node=>node.scrollTop=node.scrollHeight);
-await pointerDrag('#modal .sheet-pull-zone',90);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
+await pointerDrag('#modal .sheet-pull-zone',60);await page.waitForTimeout(280);assert.equal(await sheet.getAttribute('open'),null);
 await page.locator('nav a[href="#today"]').click();await page.waitForTimeout(280);
 for(let index=0,count=await page.locator('.pager-page[data-page=today] .week button').count();index<count&&!await page.locator('.pager-page[data-page=today] [data-action=start]').count();index++)await page.locator('.pager-page[data-page=today] .week button').nth(index).click();
 await page.locator('.pager-page[data-page=today] [data-action=start]').click();await page.locator('[data-action=ready]').click();
