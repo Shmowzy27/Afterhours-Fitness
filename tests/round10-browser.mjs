@@ -15,7 +15,7 @@ await page.getByRole('button',{name:/Set up my plan/}).click();
 await page.getByRole('button',{name:'Continue'}).click();
 assert.equal(await page.locator('#setup-form .daychecks').count(),2);
 const dayBoxes=await page.locator('#setup-form .daychecks .check').evaluateAll(nodes=>nodes.map(node=>node.getBoundingClientRect().height));
-assert.ok(dayBoxes.every(height=>height===48),JSON.stringify(dayBoxes));
+assert.ok(dayBoxes.every(height=>height===64),JSON.stringify(dayBoxes));
 const timeWidths=await page.locator('#setup-form .schedule-grid input[type=time]').evaluateAll(nodes=>nodes.map(node=>node.getBoundingClientRect().width));
 assert.ok(timeWidths.length>=4&&Math.max(...timeWidths)-Math.min(...timeWidths)<1,JSON.stringify(timeWidths));
 await page.getByRole('button',{name:'Continue'}).click();
